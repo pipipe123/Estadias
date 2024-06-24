@@ -13,11 +13,11 @@ const competidorSchema = new moongose.Schema({
         require: true
     },
     codigo:{
-        type: Number,
+        type: String,
         require: true
     },
     
 })
 
 
-export default moongose.model('Competidor', competidorSchema)
+export default moongose.model('Evento', competidorSchema)

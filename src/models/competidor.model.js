@@ -8,7 +8,7 @@ const competidorSchema = new moongose.Schema({
         type: String,
         require: true
     },
-    añoNacimiento:{
+    anioNacimiento:{
         type: Number,
         require: true
     },

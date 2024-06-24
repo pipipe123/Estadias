@@ -15,4 +15,4 @@ const competidorSchema = new moongose.Schema({
 })
 
 
-export default moongose.model('Competidor', competidorSchema)
+export default moongose.model('Entrenador', competidorSchema)
