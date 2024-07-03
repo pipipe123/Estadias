@@ -12,6 +12,10 @@ const competidorSchema = new moongose.Schema({
         type: Number,
         require: true
     },
+    categoria:{
+        type: Number,
+        require: true
+    },
     peso:{
         type: Number,
         require: true
@@ -28,6 +32,10 @@ const competidorSchema = new moongose.Schema({
         type: String,
         // require: true
     },
+    gimnasio:{
+        type: String,
+        // require: true
+    }
     
 })
 

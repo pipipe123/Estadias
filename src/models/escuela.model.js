@@ -1,18 +1,18 @@
 import moongose from "mongoose"
-const competidorSchema = new moongose.Schema({
+const escuelaSchema = new moongose.Schema({
     nombre:{
         type: String,
         require: true
     },
-    grado:{
-        type: String,
+    gimnasios:{
+        type: [String],
         require: true
     },
-    gimnasio:{
+    codigo:{
         type: String,
         require:true
     },
 })
 
 
-export default moongose.model('Entrenador', competidorSchema)
+export default moongose.model('Escuela', escuelaSchema)
