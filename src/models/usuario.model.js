@@ -1,10 +1,10 @@
 import moongose from "mongoose"
-const gimnasioSchema = new moongose.Schema({
-    nombre:{
+const usuarioSchema = new moongose.Schema({
+    usuario:{
         type: String,
         require: true
     },
-    contra:{
+    pass:{
         type: String,
         require: true
     },
@@ -15,4 +15,4 @@ const gimnasioSchema = new moongose.Schema({
 })
 
 
-export default moongose.model('Gimnasio', gimnasioSchema)
+export default moongose.model('Usuario', usuarioSchema)

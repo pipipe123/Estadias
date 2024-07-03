@@ -1,10 +1,9 @@
 import express from 'express'
 import morgan from 'morgan'
-// import authRoutes from './routes/auth.routes.js'
-// import cookieParser from 'cookie-parser'
-// import taskRoutes from './routes/tasks.routes.js'
+import authRoutes from './routes/auth.routes.js'
+import session from 'express-session';
 import services from './routes/services.routes.js'
-// import componentes from './routes/componentes.routes.js'
+
 
 import cors from 'cors'
 const app = express()
@@ -15,6 +14,13 @@ credentials: true // Habilitar el envío de credenciales
 
 app.use(morgan('dev'))
 app.use(express.json())
+
+app.use(session({
+  secret: 'tu_secreto',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // En producción, asegúrate de configurar esto correctamente
+}));
 
 
 app.use(function(req, res, next) {
@@ -29,6 +35,7 @@ app.use(function(req, res, next) {
   
 
 app.use('/api',services)
+app.use('/auth',authRoutes)
 // app.use('/api',taskRoutes)
   
 

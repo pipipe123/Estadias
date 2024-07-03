@@ -33,6 +33,21 @@ export const readEntrenador = async (req, res) => {
     }
 };
 
+// Read Entrenador by Name
+export const readEntrenadorxNombre = async (req, res) => {
+    const { nombre } = req.params;
+    try {
+        const entrenador = await Entrenador.findOne({ nombre });
+        if (!entrenador) {
+            return res.status(404).send('Entrenador no encontrado');
+        }
+        res.send(entrenador);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al buscar el entrenador');
+    }
+};
+
 // Update Entrenador
 export const updateEntrenador = async (req, res) => {
     const { nombre } = req.body;

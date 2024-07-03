@@ -4,10 +4,6 @@ const escuelaSchema = new moongose.Schema({
         type: String,
         require: true
     },
-    gimnasios:{
-        type: [String],
-        require: true
-    },
     codigo:{
         type: String,
         require:true

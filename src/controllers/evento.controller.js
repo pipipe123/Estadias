@@ -35,6 +35,20 @@ export const readEvento = async (req, res) => {
     }
 };
 
+export const ReadEventoxCodigo = async (req, res) => {
+    const { codigo } = req.params;
+    console.log(codigo) // Obtener el código desde los parámetros de la URL
+    try {
+        const evento = await Evento.findOne({ codigo: codigo });
+        if (!evento) {
+            return res.status(404).send('Evento no encontrado');
+        }
+        res.status(200).send(evento);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al buscar el evento');
+    }
+};
 // Update Evento
 export const updateEvento = async (req, res) => {
     const { codigo } = req.body;
@@ -76,17 +90,3 @@ export const deleteEvento = async (req, res) => {
     }
 };
 
-export const ReadEventoxCodigo = async (req, res) => {
-    const { codigo } = req.params;
-    console.log(codigo) // Obtener el código desde los parámetros de la URL
-    try {
-        const evento = await Evento.findOne({ codigo: codigo });
-        if (!evento) {
-            return res.status(404).send('Evento no encontrado');
-        }
-        res.status(200).send(evento);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send('Error al buscar el evento');
-    }
-};
