@@ -1,20 +1,19 @@
+import React from 'react';
+import './css/general.css'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-
+import { MainApp } from './components/mainapp';
+import Header from './components/header';
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <div className='content'>
+          <Header/>
+      <main>
+        <div className='inicio'>
+          
+        </div>
+      </main>
+    </div>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

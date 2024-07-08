@@ -1,0 +1,33 @@
+.content{
+    position: relative;
+    width: 100%;
+    color: bisque;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Arial;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    /* background: radial-gradient(circle, rgb(87, 88, 94) 0%, rgb(48, 49, 54) 100%); */
+    background-image: url('../assets/fondo.jpg');
+    background-size: cover; /* Ajusta la imagen para cubrir todo el área */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+  }
+.inicio{
+    position: absolute;
+
+    background-color: white;
+    opacity: 0.1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 70%;
+    height: 65%;
+
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destacar el header */
+    z-index: 2;
+} 
