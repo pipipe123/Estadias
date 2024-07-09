@@ -1,4 +1,17 @@
+@keyframes slide-in2 {
+  from {
+      transform: translatey(-100%);
+      opacity: 0;
+  }
+  to {
+      transform: translatey(0);
+      opacity: 1;
+  }
+}
 .sticky-header {
+  opacity: 0;
+    animation: slide-in2 1s ease-out forwards;
+    animation-delay: 1s;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -34,4 +47,13 @@
     padding-right: 10%;
   }
 
+ a{
+    text-decoration: none; /* Elimina el subrayado predeterminado */
+    cursor: pointer; /* Cambia el cursor a pointer */
+    transition: all 0.4s ease;
+    display: inline-block;
+  }
   
+  a:hover {
+    transform: scale(1.2);
+  }

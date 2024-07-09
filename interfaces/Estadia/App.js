@@ -1,19 +1,16 @@
 import React from 'react';
-import './css/general.css'
+import './css/general.css';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { MainApp } from './components/mainapp';
+import MainApp from './components/mainapp'; // Corrección aquí
 import Header from './components/header';
+
 export default function App() {
   return (
     <div className='content'>
-          <Header/>
-      <main>
-        <div className='inicio'>
-          
-        </div>
-      </main>
+
+      <Header />
+      <MainApp/>
     </div>
   );
 }
-
