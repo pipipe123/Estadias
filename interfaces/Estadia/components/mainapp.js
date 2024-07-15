@@ -25,7 +25,7 @@ export default function MainApp() {
 
   return (
     <div className='content'>
-
+      <Header/>
       <main>
         <div className='animated-background'>
           <div className='inicio'>

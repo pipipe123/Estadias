@@ -1,8 +1,12 @@
-import moongose from "mongoose"
+    import moongose from "mongoose"
 const usuarioSchema = new moongose.Schema({
     usuario:{
         type: String,
         require: true
+    },
+
+    correo:{
+        
     },
     pass:{
         type: String,
