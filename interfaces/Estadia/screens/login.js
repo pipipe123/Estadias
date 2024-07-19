@@ -23,7 +23,7 @@ export default function Login() {
       <div className='side-1'>
         <div className='side-content-1'>
           <table>
-            <tr><td><h1>Bienvenido!</h1></td></tr>
+            <tr><td><h1>¡Bienvenido!</h1></td></tr>
             <tr><td><h3>¿Aún no tienes una cuenta?</h3></td></tr>
             <tr><td><div className='separador'></div></td></tr>
             <tr><td><button onClick={goToSignup}>Registrarse</button></td></tr>

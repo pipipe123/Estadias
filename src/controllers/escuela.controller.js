@@ -2,9 +2,9 @@ import Escuela from "../models/escuela.model.js";
 
 // Crear una nueva escuela
 export const createEscuela = async (req, res) => {
-    const { nombre, gimnasios, codigo } = req.body;
+    const { nombre, codigo } = req.body;
     try {
-        const newEscuela = new Escuela({ nombre, gimnasios, codigo });
+        const newEscuela = new Escuela({ nombre, codigo });
         const saveEscuela = await newEscuela.save();
         res.status(201).send(saveEscuela);
     } catch (error) {
