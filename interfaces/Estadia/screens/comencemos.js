@@ -5,20 +5,18 @@ import { BsClipboardCheck } from "react-icons/bs";
 import '../css/general.css';
 import '../css/comencemos.css';
 import Competidor from '../components/competidor';
-import Entrenador from '../components/entrenador';
+
 import Escuela from '../components/escuela';
 import Gimnasio from '../components/gimnasio';
 
 const Comencemos = () => {
-    const components = ['Escuela', 'Gimnasio', 'Entrenador', 'Competidor'];
+    const components = ['Escuela', 'Gimnasio',  'Competidor'];
     const [selectedComponent, setSelectedComponent] = useState(components[0]);
 
     const renderComponent = () => {
         switch (selectedComponent) {
             case 'Competidor':
                 return <Competidor />;
-            case 'Entrenador':
-                return <Entrenador />;
             case 'Escuela':
                 return <Escuela />;
             case 'Gimnasio':
@@ -54,7 +52,6 @@ const Comencemos = () => {
                     <ul>
                         <li onClick={() => setSelectedComponent('Escuela')}>Escuela</li>
                         <li onClick={() => setSelectedComponent('Gimnasio')}>Gimnasio</li>
-                        <li onClick={() => setSelectedComponent('Entrenador')}>Entrenador</li>
                         <li onClick={() => setSelectedComponent('Competidor')}>Competidor</li>
                         
                     </ul>

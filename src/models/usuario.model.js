@@ -6,7 +6,8 @@ const usuarioSchema = new moongose.Schema({
     },
 
     correo:{
-        
+        type: String,
+        require: true
     },
     pass:{
         type: String,

@@ -58,7 +58,31 @@ export default Competidor = () => {
               <tr>
                 <td>
                   <div className='formularios-escuela'>
-                    <input {...register('nombre', { required: true })} placeholder='¿Que grado es?'/>
+                  {/* <label> */}
+                {/* Selecciona tu cinturón: */}
+                <select {...register('grado', { required: 'Seleccione un cinturón' })}>
+                    <option value="">¿Que cinturón es?</option>
+                    <option value="Cinturón Blanco">Cinturón Blanco</option>
+                    <option value="Cinturón Blanco/Amarillo">Cinturón Blanco- Avanzado</option>
+                    <option value="Cinturón Amarillo">Cinturón Amarillo</option>
+                    <option value="Cinturón Amarillo/Verde">Cinturón Amarillo- Avanzado</option>
+                    <option value="Cinturón Verde">Cinturón Verde</option>
+                    <option value="Cinturón Verde/Azul">Cinturón Verde- Avanzado</option>
+                    <option value="Cinturón Azul">Cinturón Azul</option>
+                    <option value="Cinturón Azul/Rojo">Cinturón Azul- Avanzado</option>
+                    <option value="Cinturón Rojo">Cinturón Rojo</option>
+                    <option value="Cinturón Rojo/Negro">Cinturón Rojo- Avanzado</option>
+                    <option value="Cinturón Negro">Cinturón Negro</option>
+                </select>
+            {/* </label> */}
+            {errors.belt && <p>{errors.belt.message}</p>}
+                  </div>
+                </td>
+              </tr> 
+              <tr>
+                <td>
+                  <div className='formularios-escuela'>
+                    <input {...register('anioNacimiento', { required: true })} placeholder='¿En que año nacio?'/>
                     {errors.escuela && <p>{errors.escuela.message}</p>}
                   </div>
                 </td>
@@ -66,7 +90,7 @@ export default Competidor = () => {
               <tr>
                 <td>
                   <div className='formularios-escuela'>
-                    <input {...register('nombre', { required: true })} placeholder='¿En que año nacio?'/>
+                    <input {...register('modalidad', { required: true })} placeholder='¿En que participará?'/>
                     {errors.escuela && <p>{errors.escuela.message}</p>}
                   </div>
                 </td>
@@ -74,15 +98,7 @@ export default Competidor = () => {
               <tr>
                 <td>
                   <div className='formularios-escuela'>
-                    <input {...register('nombre', { required: true })} placeholder='¿En que participará?'/>
-                    {errors.escuela && <p>{errors.escuela.message}</p>}
-                  </div>
-                </td>
-              </tr> 
-              <tr>
-                <td>
-                  <div className='formularios-escuela'>
-                    <input {...register('nombre', { required: true })} placeholder='¿Cuanto pesa?'/>
+                    <input {...register('peso', { required: true })} placeholder='¿Cuanto pesa?'/>
                     {errors.escuela && <p>{errors.escuela.message}</p>}
                   </div>
                 </td>

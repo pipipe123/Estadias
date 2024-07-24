@@ -3,12 +3,21 @@ import { useForm } from 'react-hook-form';
 import '../css/general.css';
 import '../css/signup.css';
 import { useNavigate } from 'react-router-dom';
+import { addUser } from '../services/AuthService';
 
 export default function Signup() {
   const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = data => {
-    console.log(data);
+ 
+  const goToHome = () => {
+    navigate('/');
+  };
+  
+  const onSubmit = async (data) => {
+    const res = await addUser(data);
+    console.log(res);
+
+    // console.log(data);
   };
   
   const goToLogin = () => {
@@ -17,7 +26,7 @@ export default function Signup() {
   };
 
   // Watch the password field to compare with confirm password
-  const password = watch("contraseña");
+  const password = watch("pass");
 
   return (
     <div className='contenedor'>
@@ -43,7 +52,7 @@ export default function Signup() {
                 <td>
                   <div className='formularios'>
                     <img src='../assets/user.png' className='icon' alt="Icono Nombre"></img>
-                    <input {...register('nombre', { required: true })} placeholder='Nombre'/>
+                    <input {...register('usuario', { required: true })} placeholder='Nombre'/>
                     {errors.nombre && <span>Este campo es requerido</span>}
                   </div>
                 </td>
@@ -71,7 +80,7 @@ export default function Signup() {
                 <td>
                   <div className='formularios'>
                     <img src='../assets/lock.png' className='icon' alt="Icono Contraseña"></img>
-                    <input type="password" {...register('contraseña', { required: true })} placeholder='Contraseña'/>
+                    <input type="password" {...register('pass', { required: true })} placeholder='Contraseña'/>
                     {errors.contraseña && <span>Este campo es requerido</span>}
                   </div>
                 </td>

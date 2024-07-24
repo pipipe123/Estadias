@@ -198,3 +198,10 @@ export function deleteEvento(data) {
             throw error;
         });
 }
+export function readCompetidoresPorTorneo(codigoTorneo) {
+    return axios.get(`${URL_API}/Grafica/${codigoTorneo}`)
+        .catch(error => {
+            console.error('Error al enviar la solicitud:', error);
+            throw error;
+        });
+}

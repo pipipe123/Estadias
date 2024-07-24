@@ -3,12 +3,16 @@ import { useForm } from 'react-hook-form';
 import '../css/general.css';
 import '../css/login.css';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../services/AuthService';
 
 export default function Login() {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   
-  const onSubmit = data => {
+  const onSubmit = async (data) => {
+    console.log(data);
+    const res = await login(data)
+    console.log(res)
     console.log(data);
     // Aquí podrías agregar la lógica para procesar el inicio de sesión
   };
@@ -42,7 +46,7 @@ export default function Login() {
                 <td>
                   <div className='formularios'>
                     <img src='../assets/user.png' className='icon' alt="Icono Nombre"></img>
-                    <input {...register('nombre', { required: true })} placeholder='Nombre'/>
+                    <input {...register('usuario', { required: true })} placeholder='Nombre'/>
                     {errors.nombre && <span>Este campo es requerido</span>}
                   </div>
                 </td>
@@ -70,7 +74,7 @@ export default function Login() {
                 <td>
                   <div className='formularios'>
                     <img src='../assets/lock.png' className='icon' alt="Icono Contraseña"></img>
-                    <input type="password" {...register('contraseña', { required: true })} placeholder='Contraseña'/>
+                    <input type="password" {...register('pass', { required: true })} placeholder='Contraseña'/>
                     {errors.contraseña && <span>Este campo es requerido</span>}
                   </div>
                 </td>

@@ -8,12 +8,27 @@ const competidorSchema = new moongose.Schema({
         type: String,
         require: true
     },
+    cinta:{
+        type:String,
+        require: true
+    },
+    sexo:{
+        type: String,
+        require: true
+    },
+    // estatura:{
+    //     type: Number,
+    //     require: true
+    // },
     anioNacimiento:{
         type: Number,
         require: true
     },
+    edad:{
+        type:Number
+    },  
     categoria:{
-        type: Number,
+        type: String,
         require: true
     },
     peso:{
@@ -35,7 +50,11 @@ const competidorSchema = new moongose.Schema({
     gimnasio:{
         type: String,
         // require: true
+    },
+    torneo:{
+        type: String
     }
+    
     
 })
 

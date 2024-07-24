@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import Usuario from "../models/usuario.model.js";
 
 export const addUser = async (req, res) => {
-    const { usuario, pass, escuela } = req.body;
+    const { usuario,correo, pass, escuela } = req.body;
 
     try {
         // Verificar si el usuario ya existe
@@ -16,6 +16,7 @@ export const addUser = async (req, res) => {
 
         const newUser = new Usuario({
             usuario,
+            correo,
             pass: hashedPassword,
             escuela
         });
