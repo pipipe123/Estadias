@@ -41,14 +41,32 @@ const generarCompetidorAleatorio = async () => {
 
     const nombreCompleto = `${primerNombre} ${segundoNombre} ${getRandomElement(apellidos)} ${getRandomElement(apellidos)}`;
     const cinta = getRandomElement(Object.keys(beltToGupMap));
-    const estatura = Math.floor(Math.random() * (200 - 150 + 1)) + 150; // Estatura entre 150 y 200 cm
+    const estaturaCm = Math.floor(Math.random() * (200 - 150 + 1)) + 150; // Estatura entre 150 y 200 cm
+    const estatura = estaturaCm / 100; // Convertir a metros
     const anioNacimiento = Math.floor(Math.random() * (2012 - 1984 + 1)) + 1984; // Año de nacimiento entre 1984 y 2012
-    const peso = Math.floor(Math.random() * (100 - 30 + 1)) + 30; // Peso entre 30 y 100 kg
+    const edad = new Date().getFullYear() - anioNacimiento;
+
+    // Ajustar el IMC objetivo basado en el sexo y la edad
+    let imcMin, imcMax;
+
+    if (edad >= 9 && edad <= 17) { // Jóvenes
+        imcMin = 16.0;
+        imcMax = 22.0;
+    } else if (edad >= 18 && edad <= 30) { // Adultos jóvenes
+        imcMin = esMasculino ? 18.5 : 18.0;
+        imcMax = esMasculino ? 24.9 : 23.5;
+    } else { // Adultos mayores
+        imcMin = 19.0;
+        imcMax = 25.0;
+    }
+
+    const imcObjetivo = Math.random() * (imcMax - imcMin) + imcMin; // IMC dentro del rango específico
+    const peso = Math.round(imcObjetivo * estatura * estatura); // Peso en kg basado en IMC
+
     const modalidad = getRandomElement(modalidades);
     const gimnasio = getRandomElement(gimnasios);
     const torneo = "fpWa8CNR"; // Puedes ajustar esto según sea necesario
 
-    const edad = new Date().getFullYear() - anioNacimiento;
     let categoria;
 
     switch (true) {
@@ -80,7 +98,7 @@ const generarCompetidorAleatorio = async () => {
         anioNacimiento,
         peso,
         sexo,
-        estatura,
+        estatura: estaturaCm, // Guardar en cm para consistencia
         modalidad,
         gimnasio,
         escuela: "Instituto Monarca", // Suponemos que todos los gimnasios pertenecen a esta escuela
@@ -97,7 +115,7 @@ const generarCompetidorAleatorio = async () => {
 };
 
 const iniciarGeneracionCompetidores = () => {
-    setInterval(generarCompetidorAleatorio, 200); // Generar competidor cada 500 ms
+    setInterval(generarCompetidorAleatorio, 200); // Generar competidor cada 200 ms
 };
 
 export default iniciarGeneracionCompetidores;

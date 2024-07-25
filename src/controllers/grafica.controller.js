@@ -3,20 +3,31 @@ import Gimnasio from "../models/gimnasio.model.js";
 import Escuela from "../models/escuela.model.js";
 import Evento from "../models/evento.model.js";
 
-// Función para ordenar por grado (mayor a menor), peso (mayor a menor), y edad (menor a mayor)
-const ordenarPorPrioridad = (arr) => {
+// Define una clase para los competidores con los campos necesarios
+class CompetidorSimplificado {
+    constructor({ nombre, edad, cinta, peso, estatura, gimnasio, escuela }) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.cinta = cinta;
+        this.peso = peso;
+        this.estatura = estatura;
+        this.gimnasio = gimnasio;
+        this.escuela = escuela;
+    }
+}
+const ordenarPorCintaEdadImc = (arr) => {
     return arr.slice().sort((a, b) => {
         if (a.grado !== b.grado) {
             return b.grado - a.grado;
         }
-        if (a.peso !== b.peso) {
-            return b.peso - a.peso;
+        if (a.anioNacimiento !== b.anioNacimiento) {
+            return a.anioNacimiento - b.anioNacimiento;
         }
-        return a.anioNacimiento - b.anioNacimiento;
+        return a.imc - b.imc;
     });
 };
 
-// Función para ordenar cinturones negros por peso (mayor a menor) y edad (menor a mayor)
+// Esta función ordenará los cinturones negros por peso, y luego por edad
 const ordenarCinturonesNegros = (arr) => {
     return arr.slice().sort((a, b) => {
         if (a.peso !== b.peso) {
@@ -26,11 +37,11 @@ const ordenarCinturonesNegros = (arr) => {
     });
 };
 
-// Función para ordenar todas las cintas con un criterio especial de diferencia de peso
+// Esta función ordenará todas las cintas considerando el grado y una diferencia de peso mayor a 4kg
 const ordenarTodasLasCintas = (arr) => {
     return arr.slice().sort((a, b) => {
         if (a.grado !== b.grado) {
-            return b.grado - a.grado;
+            return a.grado - b.grado;
         }
         if (Math.abs(a.peso - b.peso) > 4) {
             return b.peso - a.peso;
@@ -39,9 +50,9 @@ const ordenarTodasLasCintas = (arr) => {
     });
 };
 
-// Función para ordenar por edad (mayor a menor)
+// Esta función ordenará por edad
 const ordenarPorEdad = (arr) => {
-    return arr.slice().sort((a, b) => b.anioNacimiento - a.anioNacimiento);
+    return arr.slice().sort((a, b) => a.anioNacimiento - b.anioNacimiento);
 };
 
 export const readCompetidoresPorTorneo = async (req, res) => {
@@ -87,7 +98,7 @@ export const readCompetidoresPorTorneo = async (req, res) => {
 
         // Añadir competidores a "Combate" y "Formas" según sexo y modalidad
         competidores.forEach(c => {
-            const esCintaNegra = c.grado === 0;
+            const esCintaNegra = c.grado === "0";
             const esFemenil = c.sexo === 'Femenil';
             const modalidad = c.modalidad;
 
@@ -97,19 +108,33 @@ export const readCompetidoresPorTorneo = async (req, res) => {
             const grupo = c.categoria === 'Infantil' || c.categoria === 'Cadetes' ? 'Infantil' :
                           c.categoria === 'Junior' ? 'Juvenil' : 'Adultos';
 
+            const competidorData = {
+                nombre: c.nombre,
+                edad: new Date().getFullYear() - c.anioNacimiento,
+                cinta: c.cinta,
+                peso: c.peso,
+                estatura: c.estatura,
+                gimnasio: c.gimnasio,
+                escuela: c.escuela,
+                grado: c.grado,
+                imc: c.peso / ((c.estatura / 100) ** 2)
+            };
+
+            const nuevoCompetidor = new Competidor(competidorData);
+
             if (esCintaNegra) {
                 if (modalidad.includes('combate')) {
-                    destinoCombate.cintasNegras[grupo].push(c);
+                    destinoCombate.cintasNegras[grupo].push(nuevoCompetidor);
                 }
                 if (modalidad.includes('formas')) {
-                    destinoFormas.cintasNegras[grupo].push(c);
+                    destinoFormas.cintasNegras[grupo].push(nuevoCompetidor);
                 }
             } else {
                 if (modalidad.includes('combate')) {
-                    destinoCombate.todasLasCintas[grupo].push(c);
+                    destinoCombate.todasLasCintas[grupo].push(nuevoCompetidor);
                 }
                 if (modalidad.includes('formas')) {
-                    destinoFormas.todasLasCintas[grupo].push(c);
+                    destinoFormas.todasLasCintas[grupo].push(nuevoCompetidor);
                 }
             }
         });
@@ -118,38 +143,41 @@ export const readCompetidoresPorTorneo = async (req, res) => {
         const ordenarEstructura = (estructura, ordenarFn) => ({
             femenil: {
                 todasLasCintas: {
-                    Infantil: ordenarPorEdad(ordenarFn(estructura.femenil.todasLasCintas.Infantil)),
-                    Juvenil: ordenarPorEdad(ordenarFn(estructura.femenil.todasLasCintas.Juvenil)),
-                    Adultos: ordenarPorEdad(ordenarFn(estructura.femenil.todasLasCintas.Adultos))
+                    Infantil: ordenarFn(estructura.femenil.todasLasCintas.Infantil),
+                    Juvenil: ordenarFn(estructura.femenil.todasLasCintas.Juvenil),
+                    Adultos: ordenarFn(estructura.femenil.todasLasCintas.Adultos)
                 },
                 cintasNegras: {
-                    Infantil: ordenarPorEdad(ordenarCinturonesNegros(estructura.femenil.cintasNegras.Infantil)),
-                    Juvenil: ordenarPorEdad(ordenarCinturonesNegros(estructura.femenil.cintasNegras.Juvenil)),
-                    Adultos: ordenarPorEdad(ordenarCinturonesNegros(estructura.femenil.cintasNegras.Adultos))
+                    Infantil: ordenarCinturonesNegros(estructura.femenil.cintasNegras.Infantil),
+                    Juvenil: ordenarCinturonesNegros(estructura.femenil.cintasNegras.Juvenil),
+                    Adultos: ordenarCinturonesNegros(estructura.femenil.cintasNegras.Adultos)
                 }
             },
             varonil: {
                 todasLasCintas: {
-                    Infantil: ordenarPorEdad(ordenarFn(estructura.varonil.todasLasCintas.Infantil)),
-                    Juvenil: ordenarPorEdad(ordenarFn(estructura.varonil.todasLasCintas.Juvenil)),
-                    Adultos: ordenarPorEdad(ordenarFn(estructura.varonil.todasLasCintas.Adultos))
+                    Infantil: ordenarFn(estructura.varonil.todasLasCintas.Infantil),
+                    Juvenil: ordenarFn(estructura.varonil.todasLasCintas.Juvenil),
+                    Adultos: ordenarFn(estructura.varonil.todasLasCintas.Adultos)
                 },
                 cintasNegras: {
-                    Infantil: ordenarPorEdad(ordenarCinturonesNegros(estructura.varonil.cintasNegras.Infantil)),
-                    Juvenil: ordenarPorEdad(ordenarCinturonesNegros(estructura.varonil.cintasNegras.Juvenil)),
-                    Adultos: ordenarPorEdad(ordenarCinturonesNegros(estructura.varonil.cintasNegras.Adultos))
+                    Infantil: ordenarCinturonesNegros(estructura.varonil.cintasNegras.Infantil),
+                    Juvenil: ordenarCinturonesNegros(estructura.varonil.cintasNegras.Juvenil),
+                    Adultos: ordenarCinturonesNegros(estructura.varonil.cintasNegras.Adultos)
                 }
             }
         });
 
         const resultado = {
-            combate: ordenarEstructura(combate, ordenarTodasLasCintas),
-            formas: ordenarEstructura(formas, ordenarPorPrioridad)
+            combate: ordenarEstructura(combate, ordenarPorCintaEdadImc),
+            formas: ordenarEstructura(formas, ordenarPorCintaEdadImc)
         };
-        console.log(resultado)
+
+        console.log(resultado);
         res.json(resultado);
     } catch (error) {
         console.error('Error al buscar competidores:', error);
         res.status(500).send('Error al buscar competidores');
     }
 };
+
+

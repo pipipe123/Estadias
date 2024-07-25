@@ -1,43 +1,38 @@
 import Competidor from "../models/competidor.model.js";
 import Gimnasio from "../models/gimnasio.model.js";
 import Escuela from "../models/escuela.model.js";
-// Create Competidor
-// Crear un nuevo competidor
+
+
+// Mapeo de grados a números
+const beltToGupMap = {
+    "Cinturón Blanco": 10,
+    "Cinturón Blanco - Avanzado": 9,
+    "Cinturón Amarillo": 8,
+    "Cinturón Amarillo - Avanzado": 7,
+    "Cinturón Verde": 6,
+    "Cinturón Verde - Avanzado": 5,
+    "Cinturón Azul": 4,
+    "Cinturón Azul - Avanzado": 3,
+    "Cinturón Rojo": 2,
+    "Cinturón Rojo - Avanzado": 1,
+    "Cinturón Negro": 0
+};
+
 export const createCompetidor = async (req, res) => {
     const {
         nombre,
         cinta,
         sexo,
-        estatura,
+        estatura, // en metros
         anioNacimiento,
-        peso,
+        peso, // en kg
         modalidad,
         gimnasio,
         escuela,
         torneo
     } = req.body;
 
-    // Mapeo de grados a números
-    const beltToGupMap = {
-        "Cinturón Blanco": 10,
-        "Cinturón Blanco - Avanzado": 9,
-        "Cinturón Amarillo": 8,
-        "Cinturón Amarillo - Avanzado": 7,
-        "Cinturón Verde": 6,
-        "Cinturón Verde - Avanzado": 5,
-        "Cinturón Azul": 4,
-        "Cinturón Azul - Avanzado": 3,
-        "Cinturón Rojo": 2,
-        "Cinturón Rojo - Avanzado": 1,
-        "Cinturón Negro": 0
-    };
-
     try {
-        // Validar si el entrenador existe
-        const entrenadorExistente = await Entrenador.findOne({ nombre: entrenador });
-        if (!entrenadorExistente) {
-            return res.status(404).send('Entrenador no encontrado');
-        }
 
         // Validar si el gimnasio existe
         const gimnasioExistente = await Gimnasio.findOne({ nombre: gimnasio });
@@ -45,6 +40,7 @@ export const createCompetidor = async (req, res) => {
             return res.status(404).send('Gimnasio no encontrado');
         }
         const entrenador = gimnasioExistente.entrenador;
+
         // Validar si la escuela existe
         const escuelaExistente = await Escuela.findOne({ nombre: escuela });
         if (!escuelaExistente) {
@@ -81,6 +77,9 @@ export const createCompetidor = async (req, res) => {
             return res.status(400).send('Grado de cinturón inválido');
         }
 
+        // Calcular el IMC
+        const imc = peso / (estatura * estatura);
+
         const newCompetidor = new Competidor({
             nombre,
             cinta,
@@ -89,13 +88,14 @@ export const createCompetidor = async (req, res) => {
             edad,
             peso,
             sexo,
-            // estatura,
+            estatura,
             modalidad,
             entrenador,
             gimnasio,
             escuela,
             categoria,
-            torneo// Añadimos la categoría al modelo
+            torneo,
+            imc // Añadimos el IMC al modelo
         });
 
         const saveCompetidor = await newCompetidor.save();
@@ -106,6 +106,7 @@ export const createCompetidor = async (req, res) => {
         res.status(500).send('Error al crear el competidor');
     }
 };
+
 
 
 

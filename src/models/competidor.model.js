@@ -16,10 +16,14 @@ const competidorSchema = new moongose.Schema({
         type: String,
         require: true
     },
-    // estatura:{
-    //     type: Number,
-    //     require: true
-    // },
+    estatura:{
+        type: Number,
+        require: true
+    },
+    imc:{
+        type: Number,
+        require:true
+    },
     anioNacimiento:{
         type: Number,
         require: true
