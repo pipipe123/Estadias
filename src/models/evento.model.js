@@ -1,23 +1,30 @@
-import moongose from "mongoose"
-const competidorSchema = new moongose.Schema({
-    totalAreas:{
+import mongoose from "mongoose";
+
+const competidorSchema = new mongoose.Schema({
+    totalAreas: {
         type: Number,
-        require: true
+        required: true
     },
-    cantidadCompetidores:{
+    cantidadCompetidores: {
         type: Number,
-        require: true
+        required: true
     },
-    cantidadjueces:{
+    cantidadJueces: {
         type: Number,
-        require: true
+        required: true
     },
-    codigo:{
+    codigo: {
         type: String,
-        require: true
+        required: true
     },
-    
-})
+    combate: {
+        type: Object,
+        required: true
+    },
+    formas: {
+        type: Object,
+        required: true
+    }
+});
 
-
-export default moongose.model('Evento', competidorSchema)
+export default mongoose.model('Evento', competidorSchema);

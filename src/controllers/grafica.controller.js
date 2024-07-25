@@ -1,6 +1,4 @@
 import Competidor from "../models/competidor.model.js";
-import Gimnasio from "../models/gimnasio.model.js";
-import Escuela from "../models/escuela.model.js";
 import Evento from "../models/evento.model.js";
 
 // Define una clase para los competidores con los campos necesarios
@@ -15,6 +13,7 @@ class CompetidorSimplificado {
         this.escuela = escuela;
     }
 }
+
 const ordenarPorCintaEdadImc = (arr) => {
     return arr.slice().sort((a, b) => {
         if (a.grado !== b.grado) {
@@ -173,11 +172,17 @@ export const readCompetidoresPorTorneo = async (req, res) => {
         };
 
         console.log(resultado);
-        res.json(resultado);
+
+        // Actualizar el evento con el resultado
+        const evento = await Evento.findOneAndUpdate(
+            { codigo: codigoTorneo },
+            { combate: resultado.combate, formas: resultado.formas },
+            { new: true, upsert: true }
+        );
+
+        res.json(evento);
     } catch (error) {
         console.error('Error al buscar competidores:', error);
         res.status(500).send('Error al buscar competidores');
     }
 };
-
-
