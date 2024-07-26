@@ -4,10 +4,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { readCompetidoresPorTorneo } from '../services/compServices';
-
+import { emparejarCompetidores } from '../services/compServices';
 export default function Torneo() {
     const gettorneo = async () =>{
-        const res = await readCompetidoresPorTorneo("fpWa8CNR")
+        const res = await emparejarCompetidores("fpWa8CNR")
         console.log(res)
     }
     useEffect(() => {

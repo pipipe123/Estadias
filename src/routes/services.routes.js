@@ -5,6 +5,7 @@ import { createCompetidor, readCompetidor, updateCompetidor, deleteCompetidor } 
 
 import { createEvento, readEvento, updateEvento, deleteEvento, ReadEventoxCodigo } from "../controllers/evento.controller.js";
 import { readCompetidoresPorTorneo } from "../controllers/grafica.controller.js";
+import { EmparejarCompetidores } from "../controllers/emparejamiento.js";
 const router=Router();
 
 router.post('/Escuela',createEscuela);
@@ -32,5 +33,6 @@ router.put('/Evento',updateEvento);
 router.delete('/Evento',deleteEvento);
 
 router.get('/Grafica/:codigoTorneo', readCompetidoresPorTorneo);
+router.get('/Emparejar/:codigoTorneo', EmparejarCompetidores);
 
 export default router

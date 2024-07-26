@@ -205,3 +205,10 @@ export function readCompetidoresPorTorneo(codigoTorneo) {
             throw error;
         });
 }
+export function emparejarCompetidores(codigoTorneo) {
+    return axios.get(`${URL_API}/Emparejar/${codigoTorneo}`)
+        .catch(error => {
+            console.error('Error al enviar la solicitud:', error);
+            throw error;
+        });
+}

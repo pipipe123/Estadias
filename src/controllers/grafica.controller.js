@@ -3,7 +3,7 @@ import Evento from "../models/evento.model.js";
 
 // Define una clase para los competidores con los campos necesarios
 class CompetidorSimplificado {
-    constructor({ nombre, edad, cinta, peso, estatura, gimnasio, escuela }) {
+    constructor({ nombre, edad, cinta, peso, estatura, gimnasio, escuela, modalidad }) {
         this.nombre = nombre;
         this.edad = edad;
         this.cinta = cinta;
@@ -11,6 +11,7 @@ class CompetidorSimplificado {
         this.estatura = estatura;
         this.gimnasio = gimnasio;
         this.escuela = escuela;
+        this.modalidad = modalidad;
     }
 }
 
@@ -64,45 +65,73 @@ export const readCompetidoresPorTorneo = async (req, res) => {
             return res.status(404).send('No se encontraron competidores para este torneo');
         }
 
-        // Crear estructuras iniciales para "Combate" y "Formas"
+        // Crear estructuras iniciales para "Formas" y "Combate" organizadas por cintas y cinturones negros
         const estructuraInicial = {
-            femenil: {
+            formas: {
                 todasLasCintas: {
-                    Infantil: [],
-                    Juvenil: [],
-                    Adultos: []
+                    femenil: {
+                        Infantil: [],
+                        Juvenil: [],
+                        Adultos: []
+                    },
+                    varonil: {
+                        Infantil: [],
+                        Juvenil: [],
+                        Adultos: []
+                    }
                 },
                 cintasNegras: {
-                    Infantil: [],
-                    Juvenil: [],
-                    Adultos: []
+                    femenil: {
+                        Infantil: [],
+                        Juvenil: [],
+                        Adultos: []
+                    },
+                    varonil: {
+                        Infantil: [],
+                        Juvenil: [],
+                        Adultos: []
+                    }
                 }
             },
-            varonil: {
+            combate: {
                 todasLasCintas: {
-                    Infantil: [],
-                    Juvenil: [],
-                    Adultos: []
+                    femenil: {
+                        Infantil: [],
+                        Juvenil: [],
+                        Adultos: []
+                    },
+                    varonil: {
+                        Infantil: [],
+                        Juvenil: [],
+                        Adultos: []
+                    }
                 },
                 cintasNegras: {
-                    Infantil: [],
-                    Juvenil: [],
-                    Adultos: []
+                    femenil: {
+                        Infantil: [],
+                        Juvenil: [],
+                        Adultos: []
+                    },
+                    varonil: {
+                        Infantil: [],
+                        Juvenil: [],
+                        Adultos: []
+                    }
                 }
             }
         };
 
-        const combate = JSON.parse(JSON.stringify(estructuraInicial));
-        const formas = JSON.parse(JSON.stringify(estructuraInicial));
+        const formas = JSON.parse(JSON.stringify(estructuraInicial.formas));
+        const combate = JSON.parse(JSON.stringify(estructuraInicial.combate));
 
-        // Añadir competidores a "Combate" y "Formas" según sexo y modalidad
+        // Añadir competidores a "Formas" y "Combate" según sexo y modalidad
         competidores.forEach(c => {
             const esCintaNegra = c.grado === "0";
             const esFemenil = c.sexo === 'Femenil';
             const modalidad = c.modalidad;
 
-            const destinoCombate = esFemenil ? combate.femenil : combate.varonil;
-            const destinoFormas = esFemenil ? formas.femenil : formas.varonil;
+            const destinoFormas = esCintaNegra ? formas.cintasNegras : formas.todasLasCintas;
+            const destinoCombate = esCintaNegra ? combate.cintasNegras : combate.todasLasCintas;
 
             const grupo = c.categoria === 'Infantil' || c.categoria === 'Cadetes' ? 'Infantil' :
                           c.categoria === 'Junior' ? 'Juvenil' : 'Adultos';
@@ -116,59 +145,57 @@ export const readCompetidoresPorTorneo = async (req, res) => {
                 gimnasio: c.gimnasio,
                 escuela: c.escuela,
                 grado: c.grado,
+                modalidad: c.modalidad,
                 imc: c.peso / ((c.estatura / 100) ** 2)
             };
 
             const nuevoCompetidor = new Competidor(competidorData);
 
-            if (esCintaNegra) {
-                if (modalidad.includes('combate')) {
-                    destinoCombate.cintasNegras[grupo].push(nuevoCompetidor);
-                }
+            // Asegurarse de que el grupo existe antes de añadir el competidor
+            if (destinoFormas && destinoFormas[esFemenil ? 'femenil' : 'varonil'] && destinoFormas[esFemenil ? 'femenil' : 'varonil'][grupo]) {
                 if (modalidad.includes('formas')) {
-                    destinoFormas.cintasNegras[grupo].push(nuevoCompetidor);
+                    destinoFormas[esFemenil ? 'femenil' : 'varonil'][grupo].push(nuevoCompetidor);
                 }
-            } else {
+            }
+
+            if (destinoCombate && destinoCombate[esFemenil ? 'femenil' : 'varonil'] && destinoCombate[esFemenil ? 'femenil' : 'varonil'][grupo]) {
                 if (modalidad.includes('combate')) {
-                    destinoCombate.todasLasCintas[grupo].push(nuevoCompetidor);
-                }
-                if (modalidad.includes('formas')) {
-                    destinoFormas.todasLasCintas[grupo].push(nuevoCompetidor);
+                    destinoCombate[esFemenil ? 'femenil' : 'varonil'][grupo].push(nuevoCompetidor);
                 }
             }
         });
 
-        // Ordenar los competidores en "Combate" y "Formas"
+        // Ordenar los competidores en "Formas" y "Combate"
         const ordenarEstructura = (estructura, ordenarFn) => ({
-            femenil: {
-                todasLasCintas: {
-                    Infantil: ordenarFn(estructura.femenil.todasLasCintas.Infantil),
-                    Juvenil: ordenarFn(estructura.femenil.todasLasCintas.Juvenil),
-                    Adultos: ordenarFn(estructura.femenil.todasLasCintas.Adultos)
+            todasLasCintas: {
+                femenil: {
+                    Infantil: ordenarFn(estructura.todasLasCintas.femenil.Infantil),
+                    Juvenil: ordenarFn(estructura.todasLasCintas.femenil.Juvenil),
+                    Adultos: ordenarFn(estructura.todasLasCintas.femenil.Adultos)
                 },
-                cintasNegras: {
-                    Infantil: ordenarCinturonesNegros(estructura.femenil.cintasNegras.Infantil),
-                    Juvenil: ordenarCinturonesNegros(estructura.femenil.cintasNegras.Juvenil),
-                    Adultos: ordenarCinturonesNegros(estructura.femenil.cintasNegras.Adultos)
+                varonil: {
+                    Infantil: ordenarFn(estructura.todasLasCintas.varonil.Infantil),
+                    Juvenil: ordenarFn(estructura.todasLasCintas.varonil.Juvenil),
+                    Adultos: ordenarFn(estructura.todasLasCintas.varonil.Adultos)
                 }
             },
-            varonil: {
-                todasLasCintas: {
-                    Infantil: ordenarFn(estructura.varonil.todasLasCintas.Infantil),
-                    Juvenil: ordenarFn(estructura.varonil.todasLasCintas.Juvenil),
-                    Adultos: ordenarFn(estructura.varonil.todasLasCintas.Adultos)
+            cintasNegras: {
+                femenil: {
+                    Infantil: ordenarCinturonesNegros(estructura.cintasNegras.femenil.Infantil),
+                    Juvenil: ordenarCinturonesNegros(estructura.cintasNegras.femenil.Juvenil),
+                    Adultos: ordenarCinturonesNegros(estructura.cintasNegras.femenil.Adultos)
                 },
-                cintasNegras: {
-                    Infantil: ordenarCinturonesNegros(estructura.varonil.cintasNegras.Infantil),
-                    Juvenil: ordenarCinturonesNegros(estructura.varonil.cintasNegras.Juvenil),
-                    Adultos: ordenarCinturonesNegros(estructura.varonil.cintasNegras.Adultos)
+                varonil: {
+                    Infantil: ordenarCinturonesNegros(estructura.cintasNegras.varonil.Infantil),
+                    Juvenil: ordenarCinturonesNegros(estructura.cintasNegras.varonil.Juvenil),
+                    Adultos: ordenarCinturonesNegros(estructura.cintasNegras.varonil.Adultos)
                 }
             }
         });
 
         const resultado = {
-            combate: ordenarEstructura(combate, ordenarPorCintaEdadImc),
-            formas: ordenarEstructura(formas, ordenarPorCintaEdadImc)
+            formas: ordenarEstructura(formas, ordenarPorCintaEdadImc),
+            combate: ordenarEstructura(combate, ordenarPorCintaEdadImc)
         };
 
         console.log(resultado);
