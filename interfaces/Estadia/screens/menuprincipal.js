@@ -15,7 +15,7 @@ export default function MenuPrincipal() {
           {/* Añade más elementos del menú lateral aquí */}
         </ul>
       </div>
-      <div className='content'>
+      <div className='content-menuprincipal'>
         <div className='content-principal'>
             <table>
                 <tr className='fila-1'>
