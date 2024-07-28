@@ -52,6 +52,21 @@ export const readGimnasioxNombre = async (req, res) => {
     }
 };
 
+// Obtener gimnasios por escuela
+export const readGimnasioxEscuela = async (req, res) => {
+    const { escuela } = req.params;
+    try {
+        const gimnasios = await Gimnasio.find({ escuela });
+        if (!gimnasios || gimnasios.length === 0) {
+            return res.status(404).send('No se encontraron gimnasios para esta escuela');
+        }
+        res.status(200).send(gimnasios);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al buscar gimnasios por escuela');
+    }
+};
+
 // Actualizar un gimnasio por nombre
 export const updateGimnasio = async (req, res) => {
     const { nombre } = req.params;

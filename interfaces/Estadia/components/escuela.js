@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import '../css/general'
 import '../css/escuela'
-
+import { createEscuela } from '../services/compServices';
 // Esquema de validación de yup
 const schema = yup.object().shape({
   escuela: yup.string().required('El nombre de la escuela es obligatorio'),
@@ -20,7 +20,9 @@ export default escuela = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    const res= await createEscuela(data)
+    console.log(res)
     console.log(data);
   };
 

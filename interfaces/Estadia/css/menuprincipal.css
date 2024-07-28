@@ -1,0 +1,141 @@
+/* Estilos generales */
+
+
+.container {
+    display: flex;
+    width: 100%;
+}
+.menu-icon{
+    font-size: 40px;
+}
+.sidebar {
+    position: fixed; /* Fija la barra lateral al borde izquierdo */
+    top: 0;
+    left: 0;
+    /* width: 200px; Ajusta el ancho según tus necesidades */
+    width: 60px;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    background-color: black;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    z-index: 1; /* Asegura que la barra lateral esté encima del fondo */
+}
+
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.content {
+    margin-left: 100px; /* Deja espacio para la barra lateral */
+    padding-top: 10vh; /* Espacio para el header */
+    position: relative;
+    height: auto;
+    /* overflow: hidden; */
+    flex: 1; /* Permite que el contenido ocupe el espacio restante */
+}
+
+.fondo-principal {
+    margin-top: 10vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1; /* Asegura que el fondo esté detrás del contenido */
+}
+
+.fondo-principal img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content-principal {
+    /* display: flex;
+    /* flex-direction: column; Cambia a columna para permitir el scroll */
+    /* justify-content: center;
+    align-items: center; */ 
+    width: 100%;
+    height: 100%;
+}
+.content-principal table{
+    /* margin: 5rem; */
+    /* display: flex;
+    /* flex-direction: column; Cambia a columna para permitir el scroll */
+    /* justify-content: center;
+    align-items: center; */ 
+    width: 100%;
+    /* height: auto; */
+    /* border: collapse; */
+}
+
+.main-container {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin: 20px 0; /* Añade espacio arriba y abajo para el scroll */
+}
+
+.admin, .info-container, .letrero, .algomas {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+/* Estilos para la línea de división */
+hr.divider {
+    border: 0; /* Elimina el borde predeterminado */
+    height: 1px; /* Grosor de la línea */
+    background: #c8c8c8; /* Color de la línea */
+    margin: 20px 0; /* Espacio arriba y abajo de la línea */
+    width: 100%; /* Asegura que la línea ocupe todo el ancho del contenedor */
+}
+
+
+.notas-version{
+
+    margin-left: auto;
+    margin-right: auto;
+}
+.info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+    width: 80%;
+    height: auto; /* Permite que el tamaño se ajuste al contenido */
+}
+
+.notas-version, .mis-eventos {
+    /* margin-top: 3rem;
+    margin-bottom: 3rem; */
+    width: 100%;
+    height: 100%; /* Permite que el tamaño se ajuste al contenido */
+}
+.fila-1{
+    height: 20%;
+}
+.fila-2{
+    width: 50%;
+}
+.fila-3{
+    margin-top: 30px;
+    position: relative;
+    height: 50%;
+}
+.fila-3 td{
+    /* padding: 10px; */
+}
+.algomas{
+    height: 100%;
+}

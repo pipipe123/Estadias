@@ -2,7 +2,6 @@ import Competidor from "../models/competidor.model.js";
 import Gimnasio from "../models/gimnasio.model.js";
 import Escuela from "../models/escuela.model.js";
 
-
 // Mapeo de grados a números
 const beltToGupMap = {
     "Cinturón Blanco": 10,
@@ -18,6 +17,7 @@ const beltToGupMap = {
     "Cinturón Negro": 0
 };
 
+// Crear un nuevo competidor
 export const createCompetidor = async (req, res) => {
     const {
         nombre,
@@ -33,7 +33,6 @@ export const createCompetidor = async (req, res) => {
     } = req.body;
 
     try {
-
         // Validar si el gimnasio existe
         const gimnasioExistente = await Gimnasio.findOne({ nombre: gimnasio });
         if (!gimnasioExistente) {
@@ -107,10 +106,7 @@ export const createCompetidor = async (req, res) => {
     }
 };
 
-
-
-
-// Read Competidor
+// Leer todos los competidores
 export const readCompetidor = async (req, res) => {
     try {
         const competidores = await Competidor.find();
@@ -136,14 +132,13 @@ export const readCompetidorxNombre = async (req, res) => {
     }
 };
 
-// Update Competidor
+// Actualizar un competidor
 export const updateCompetidor = async (req, res) => {
     const { nombre } = req.body;
     const {
         grado,
         anioNacimiento,
         peso,
-        // sexo,
         estatura,
         modalidad,
         entrenador,
@@ -151,8 +146,8 @@ export const updateCompetidor = async (req, res) => {
     } = req.body;
     try {
         const updatedCompetidor = await Competidor.findOneAndUpdate(
-            { nombre: nombre }, // Assuming "nombre" is a unique identifier
-            { grado, anioNacimiento, peso, modalidad, entrenador, gimnasio,estatura },
+            { nombre: nombre }, // Asumiendo que "nombre" es un identificador único
+            { grado, anioNacimiento, peso, modalidad, entrenador, gimnasio, estatura },
             { new: true }
         );
         if (!updatedCompetidor) {
@@ -166,7 +161,7 @@ export const updateCompetidor = async (req, res) => {
     }
 };
 
-// Delete Competidor
+// Eliminar un competidor
 export const deleteCompetidor = async (req, res) => {
     const { nombre } = req.body;
     try {
@@ -179,5 +174,20 @@ export const deleteCompetidor = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send('Error al eliminar el competidor');
+    }
+};
+
+// Obtener competidores por gimnasio
+export const readCompetidoresByGimnasio = async (req, res) => {
+    const { gimnasio } = req.params;
+    try {
+        const competidores = await Competidor.find({ gimnasio });
+        if (!competidores.length) {
+            return res.status(404).send('No se encontraron competidores para este gimnasio');
+        }
+        res.status(200).send(competidores);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al buscar competidores por gimnasio');
     }
 };

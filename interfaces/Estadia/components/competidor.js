@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
+import { createCompetidor } from '../services/compServices';
 
 // Esquema de validación de yup
 const schema = yup.object().shape({
@@ -33,7 +33,9 @@ export default Competidor = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    const res = await createCompetidor(data);
+    console.log(res);
     console.log(data);
   };
 

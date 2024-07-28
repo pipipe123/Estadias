@@ -7,7 +7,7 @@ import Header from './components/header.js';
 import Signup from './screens/signup.js';
 import Login from './screens/login.js';
 import Competidor from './components/competidor.js';
-
+import MenuPrincipal from './screens/menuprincipal.js';
 import Escuela from './components/escuela.js';
 import Gimnasio from './components/gimnasio.js';
 import Comencemos from './screens/comencemos.js';
@@ -26,6 +26,8 @@ export default function App() {
           <Route path="/Escuela" element={<Escuela />} />
           <Route path="/Gimnasio" element={<Gimnasio />} />
           <Route path="/Comencemos" element={<Comencemos />} />
+
+          <Route path='/home' element={<MenuPrincipal/>}/>
       </Routes>
     </Router>
   );

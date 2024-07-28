@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
+import { createGimnasio } from '../services/compServices';
 
 // Esquema de validación de yup
 const schema = yup.object().shape({
@@ -21,8 +21,11 @@ export default gimnasio = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+
+    const res = await createGimnasio(data)
+    console.log(res);
+    console.log(data)
   };
 
   return (

@@ -31,16 +31,19 @@ export const addUser = async (req, res) => {
 
 
 export const login = async (req, res) => {
-    const { usuario, pass } = req.body;
+    const { usuario, pass, correo } = req.body;
 
     try {
         // Buscar usuario por usuario
         const usuarioExistente = await Usuario.findOne({ usuario });
         if (!usuarioExistente) {
-            return res.status(404).send('Usuario no enpassdo');
+            return res.status(404).send('Usuario no encontrado');
         }
         if (!usuarioExistente.pass) {
             return res.status(500).send('Error en la base de datos: contraseña no encontrada');
+        }
+        if(!usuarioExistente.correo) {
+            return res.status(500).send('Email no encontrado')
         }
         // Verificar la passseña
         

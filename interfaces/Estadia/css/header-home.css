@@ -1,0 +1,43 @@
+/* Estilos del header */
+.header {
+    display: flex;
+    justify-content: space-between; /* Espacio entre los elementos */
+    align-items: center; /* Alineación vertical central */
+    width: calc(100% - 140px); /* Ajusta el ancho para dejar espacio para el sidebar */
+    padding: 10px 20px;
+    background-color: white; /* Fondo blanco */
+    color: black; /* Texto negro */
+    position: fixed;
+    top: 0;
+    left: 100px; /* Deja espacio para la barra lateral */
+    z-index: 5;
+    box-shadow: 0 4px 2px -2px gray; /* Sombra debajo del header */
+    height: 8vh; /* El header ocupa el 8% de la altura del viewport */
+}
+
+/* Contenedor central del header */
+.header-left,
+.header-right {
+    display: flex;
+    align-items: center; /* Alineación vertical central */
+}
+
+/* Estilos de los iconos y el logo */
+.header .menu-icon,
+.header .profile-icon {
+    font-size: 40px;
+    cursor: pointer;
+    
+}
+
+.header .logo {
+    font-size: 36px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Ajustar la posición del icono de perfil */
+.header-right {
+    position: absolute;
+    right: 20px; /* Espacio desde el borde derecho */
+}
