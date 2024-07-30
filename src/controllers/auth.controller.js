@@ -75,3 +75,46 @@ export const logout = async (req, res) => {
         res.status(500).send('Error al cerrar sesión');
     }
 };
+export const addEscuelaToUser = async (req, res) => {
+    const { usuario, escuela } = req.body;
+
+    try {
+        // Buscar usuario por nombre de usuario
+        const usuarioExistente = await Usuario.findOne({ usuario });
+        if (!usuarioExistente) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+
+        // Agregar la escuela al usuario
+        usuarioExistente.escuela = escuela;
+
+        // Guardar los cambios
+        await usuarioExistente.save();
+
+        res.status(200).send('Escuela agregada exitosamente al usuario');
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al agregar la escuela al usuario');
+    }
+};
+
+
+export const getEscuelaByUser = async (req, res) => {
+    const { usuario } = req.body;
+
+    try {
+        // Buscar usuario por nombre de usuario
+        const usuarioExistente = await Usuario.findOne({ usuario });
+        if (!usuarioExistente) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+
+        // Obtener la escuela asociada al usuario
+        const { escuela } = usuarioExistente;
+
+        res.status(200).json({ escuela });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al obtener la escuela del usuario');
+    }
+};

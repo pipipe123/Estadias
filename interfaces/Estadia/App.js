@@ -11,6 +11,7 @@ import MenuPrincipal from './screens/menuprincipal.js';
 import Escuela from './components/escuela.js';
 import Gimnasio from './components/gimnasio.js';
 import Comencemos from './screens/comencemos.js';
+import MisGimnasios from './components/misGimnasios.js'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import Torneo from './screens/torneo.js';
 export default function App() {
@@ -26,6 +27,8 @@ export default function App() {
           <Route path="/Escuela" element={<Escuela />} />
           <Route path="/Gimnasio" element={<Gimnasio />} />
           <Route path="/Comencemos" element={<Comencemos />} />
+
+          <Route path="/Mis Gimnasios" element={<MisGimnasios />} />
 
           <Route path='/home' element={<MenuPrincipal/>}/>
       </Routes>

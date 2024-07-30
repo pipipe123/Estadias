@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import '../css/general.css';
 import '../css/signup.css';
+import { FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { addUser } from '../services/AuthService';
 
@@ -14,10 +15,11 @@ export default function Signup() {
   };
   
   const onSubmit = async (data) => {
+    console.log(data.usuario)
     const res = await addUser(data);
     console.log(res);
 
-    // console.log(data);
+    navigate('/Comencemos', { state: { usuario: data.usuario } });
   };
   
   const goToLogin = () => {
@@ -31,12 +33,15 @@ export default function Signup() {
   return (
     <div className='contenedor'>
       <div className='side'>
+        <FaArrowLeft onClick={goToHome}/>
         <div className='side-content'>
           <table>
             <tr><td><h1>Bienvenido de vuelta</h1></td></tr>
             <tr><td><h3>¿Ya tienes una cuenta?</h3></td></tr>
             <tr><td><div className='separador'></div></td></tr>
             <tr><td><button className='RegistroSlide' onClick={goToLogin}>Inicia Sesion</button></td></tr>
+            <tr><td>
+          </td></tr>
           </table>
         </div>
       </div>

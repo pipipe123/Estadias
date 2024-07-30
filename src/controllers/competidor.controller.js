@@ -181,6 +181,7 @@ export const deleteCompetidor = async (req, res) => {
 export const readCompetidoresByGimnasio = async (req, res) => {
     const { gimnasio } = req.params;
     try {
+        console.log(gimnasio)
         const competidores = await Competidor.find({ gimnasio });
         if (!competidores.length) {
             return res.status(404).send('No se encontraron competidores para este gimnasio');

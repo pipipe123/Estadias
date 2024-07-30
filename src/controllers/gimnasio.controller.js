@@ -56,6 +56,7 @@ export const readGimnasioxNombre = async (req, res) => {
 export const readGimnasioxEscuela = async (req, res) => {
     const { escuela } = req.params;
     try {
+        console.log(escuela)
         const gimnasios = await Gimnasio.find({ escuela });
         if (!gimnasios || gimnasios.length === 0) {
             return res.status(404).send('No se encontraron gimnasios para esta escuela');

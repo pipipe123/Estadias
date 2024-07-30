@@ -28,3 +28,22 @@ export function logout(data) {
             throw error;
         });
 }
+
+export const addEscuelaToUser = (data) => {
+    return axios.post(`${URL_API}/add-escuela`, data)
+      .then(response => response.data)
+      .catch(error => {
+        throw error;
+      });
+  };
+
+  export const getEscuela = async (usuario) => {
+    try {
+      const response = await axios.post(`${URL_API}/getEscuelaByUser`, { usuario });
+      console.log('pase por aqui tambien ')
+      return response.data.escuela;
+    } catch (error) {
+      console.error('Error al obtener la escuela:', error);
+      throw error;
+    }
+  };

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { createEscuela, readEscuela, readEscuelaxNombre, updateEscuela, deleteEscuela } from "../controllers/escuela.controller.js";
-import { createGimnasio, readGimnasio, readGimnasioxNombre, updateGimnasio, deleteGimnasio } from "../controllers/gimnasio.controller.js";
-import { createCompetidor, readCompetidor, updateCompetidor, deleteCompetidor } from "../controllers/competidor.controller.js";
+import { createGimnasio, readGimnasio, readGimnasioxNombre, updateGimnasio, deleteGimnasio, readGimnasioxEscuela} from "../controllers/gimnasio.controller.js";
+import { createCompetidor, readCompetidor, updateCompetidor, deleteCompetidor, readCompetidoresByGimnasio } from "../controllers/competidor.controller.js";
 
 import { createEvento, readEvento, updateEvento, deleteEvento, ReadEventoxCodigo } from "../controllers/evento.controller.js";
 import { readCompetidoresPorTorneo } from "../controllers/grafica.controller.js";
@@ -17,12 +17,14 @@ router.delete('/Escuela',deleteEscuela);
 router.post('/Gimnasio',createGimnasio);
 router.get('/Gimnasio',readGimnasio);
 router.get('/Gimnasio/:nombre',readGimnasioxNombre);
+router.get('/Gimnasio/Escuela/:escuela',readGimnasioxEscuela);
 router.put('/Gimnasio',updateGimnasio);
 router.delete('/Gimnasio',deleteGimnasio);
 
 
 router.post('/Competidor',createCompetidor);
 router.get('/Competidor',readCompetidor);
+router.get('/Competidor/:gimnasio',readCompetidoresByGimnasio);
 router.put('/Competidor',updateCompetidor);
 router.delete('/Competidor',deleteCompetidor);
 

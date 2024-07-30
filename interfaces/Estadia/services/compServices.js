@@ -1,4 +1,5 @@
 import axios from 'axios';
+import escuela from '../components/escuela';
 
 const URL_API = "http://localhost:3000/api";
 
@@ -212,3 +213,19 @@ export function emparejarCompetidores(codigoTorneo) {
             throw error;
         });
 }
+
+export function readGimnasioxEscuela(escuela) {
+    return axios.get(`${URL_API}/Gimnasio/Escuela/${escuela}`)
+        .catch(error => {
+            console.error('Error al enviar la solicitud:', error);
+            throw error;
+        });
+}
+export function readCompetidoresByGimnasio(gimnasio) {
+    return axios.get(`${URL_API}/Competidor/${gimnasio}`)
+        .catch(error => {
+            console.error('Error al enviar la solicitud:', error);
+            throw error;
+        });
+}
+

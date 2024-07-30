@@ -1,26 +1,37 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { BsChevronCompactRight, BsChevronCompactLeft } from "react-icons/bs";
-import { BsClipboardCheck } from "react-icons/bs";
 import '../css/general.css';
 import '../css/comencemos.css';
 import Competidor from '../components/competidor';
-
 import Escuela from '../components/escuela';
 import Gimnasio from '../components/gimnasio';
 
 const Comencemos = () => {
-    const components = ['Escuela', 'Gimnasio',  'Competidor'];
+    const location = useLocation();
+    const { usuario } = location.state || { usuario: '' };
+    const components = ['Escuela', 'Gimnasio', 'Competidor'];
     const [selectedComponent, setSelectedComponent] = useState(components[0]);
+    const [escuela, setEscuela] = useState(''); // Estado para almacenar la escuela
+    const [gimnasio, setGimnasio] = useState(''); // Estado para almacenar la escuela
 
+    const handleEscuelaSubmit = (escuela) => {
+        setEscuela(escuela);
+        setSelectedComponent('Gimnasio'); // Avanzar al siguiente componente
+    };
+
+    const handleGimnasioSubmit = (gimnasio) => {
+        setGimnasio(gimnasio);
+        setSelectedComponent('Competidor'); // Avanzar al siguiente componente
+    };
     const renderComponent = () => {
         switch (selectedComponent) {
             case 'Competidor':
-                return <Competidor />;
+                return <Competidor gimnasio={gimnasio} escuela={escuelau}/>;
             case 'Escuela':
-                return <Escuela />;
+                return <Escuela usuario={usuario} onEscuelaSubmit={handleEscuelaSubmit} />;
             case 'Gimnasio':
-                return <Gimnasio />;
+                return <Gimnasio escuela={escuela} onGimnasioSubmit={handleGimnasioSubmit} />;
             default:
                 return <Competidor />;
         }
@@ -44,7 +55,6 @@ const Comencemos = () => {
     return (
         <div className='content'>
             <div className='content-comencemos'>
-     
                 <div className='fondo-comencemos'>
                     <img src='../assets/fondo-comencemos.jpg' alt='Fondo' />
                 </div>
@@ -53,27 +63,23 @@ const Comencemos = () => {
                         <li onClick={() => setSelectedComponent('Escuela')}>Escuela</li>
                         <li onClick={() => setSelectedComponent('Gimnasio')}>Gimnasio</li>
                         <li onClick={() => setSelectedComponent('Competidor')}>Competidor</li>
-                        
                     </ul>
                 </div>
                 <div className='forms-comencemos'>
-
-                {!isFirstComponent && (
-                    <BsChevronCompactLeft
-                        className='icon-left'
-                        onClick={handlePrevious}
-                    />
-                )}
+                    {!isFirstComponent && (
+                        <BsChevronCompactLeft
+                            className='icon-left'
+                            onClick={handlePrevious}
+                        />
+                    )}
                     {renderComponent()}
-
                     {!isLastComponent && (
-                    <BsChevronCompactRight
-                        className='icon-right'
-                        onClick={handleNext}
-                    />
-                )}
+                        <BsChevronCompactRight
+                            className='icon-right'
+                            onClick={handleNext}
+                        />
+                    )}
                 </div>
-    
             </div>
         </div>
     );

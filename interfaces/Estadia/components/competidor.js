@@ -1,14 +1,14 @@
-// App.js
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { createCompetidor } from '../services/compServices';
+import Swal from 'sweetalert2';
 
 // Esquema de validación de yup
 const schema = yup.object().shape({
   nombre: yup.string().required('El nombre es obligatorio'),
-  grado: yup.string().required('El grado es obligatorio'),
+  cinta: yup.string().required('La cinta es obligatoria'),
   anioNacimiento: yup
     .number()
     .typeError('Debe ser un número')
@@ -20,11 +20,15 @@ const schema = yup.object().shape({
     .typeError('Debe ser un número')
     .required('El peso es obligatorio')
     .positive('Debe ser un número positivo'),
-  gimnasio: yup.string().required('El gimnasio es obligatorio'),
-  escuela: yup.string().required('La escuela es obligatoria'),
+  sexo: yup.string().required('El sexo es obligatorio'),
+  modalidad: yup.string().required('La modalidad es obligatoria'),
+  estatura: yup
+    .number()
+    .typeError('Debe ser un número')
+    .positive('Debe ser un número positivo'),
 });
 
-export default Competidor = () => {
+const Competidor = ({ gimnasio, escuela }) => {
   const {
     register,
     handleSubmit,
@@ -34,87 +38,128 @@ export default Competidor = () => {
   });
 
   const onSubmit = async (data) => {
-    const res = await createCompetidor(data);
-    console.log(res);
-    console.log(data);
+    try {
+      console.log("Datos antes de enviar:", data);
+      const datacongimnasio = { ...data, gimnasio, escuela };
+      console.log("Datos con gimnasio y escuela:", datacongimnasio);
+
+      // Envía los datos al servidor
+      const res = await createCompetidor(datacongimnasio);
+      console.log("Respuesta del servidor:", res);
+
+      // Muestra un mensaje de éxito y redirige al login
+      Swal.fire({
+        title: '¡Éxito!',
+        text: 'Los datos se han enviado correctamente. Ahora puedes iniciar sesión.',
+        icon: 'success',
+        confirmButtonText: 'Ir al Login'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirige al login, reemplaza '/login' con la ruta de tu login
+          window.location.href = '/login';
+        }
+      });
+    } catch (error) {
+      console.error("Error al enviar datos:", error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un problema al enviar los datos. Por favor, verifica los campos.',
+        icon: 'error',
+        confirmButtonText: 'Revisar'
+      });
+    }
   };
 
   return (
-
-    
-<div className='forms-escuela'>
-       <div className='mensaje'><h1>Ultimo paso</h1></div>
-          <form onSubmit={handleSubmit(onSubmit)}>
+    <div className='forms-escuela'>
+      <div className='mensaje'><h1>Último paso</h1></div>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className='forms-content-escuela'>
-            <h1>Registra un Competidor</h1>
-            <table>
-
+          <h1>Registra un Competidor</h1>
+          <table>
+            <tbody>
               <tr>
                 <td>
                   <div className='formularios-escuela'>
-                    <input {...register('nombre', { required: true })} placeholder='Nombre del competidor'/>
-                    {errors.escuela && <p>{errors.escuela.message}</p>}
+                    <input {...register('nombre')} placeholder='Nombre del competidor'/>
+                    {errors.nombre && <p>{errors.nombre.message}</p>}
                   </div>
                 </td>
               </tr> 
               <tr>
                 <td>
                   <div className='formularios-escuela'>
-                  {/* <label> */}
-                {/* Selecciona tu cinturón: */}
-                <select {...register('grado', { required: 'Seleccione un cinturón' })}>
-                    <option value="">¿Que cinturón es?</option>
-                    <option value="Cinturón Blanco">Cinturón Blanco</option>
-                    <option value="Cinturón Blanco/Amarillo">Cinturón Blanco- Avanzado</option>
-                    <option value="Cinturón Amarillo">Cinturón Amarillo</option>
-                    <option value="Cinturón Amarillo/Verde">Cinturón Amarillo- Avanzado</option>
-                    <option value="Cinturón Verde">Cinturón Verde</option>
-                    <option value="Cinturón Verde/Azul">Cinturón Verde- Avanzado</option>
-                    <option value="Cinturón Azul">Cinturón Azul</option>
-                    <option value="Cinturón Azul/Rojo">Cinturón Azul- Avanzado</option>
-                    <option value="Cinturón Rojo">Cinturón Rojo</option>
-                    <option value="Cinturón Rojo/Negro">Cinturón Rojo- Avanzado</option>
-                    <option value="Cinturón Negro">Cinturón Negro</option>
-                </select>
-            {/* </label> */}
-            {errors.belt && <p>{errors.belt.message}</p>}
+                    <select {...register('cinta')}>
+                      <option value="">¿Qué cinturón es?</option>
+                      <option value="Cinturón Blanco">Cinturón Blanco</option>
+                      <option value="Cinturón Blanco - Avanzado">Cinturón Blanco- Avanzado</option>
+                      <option value="Cinturón Amarillo">Cinturón Amarillo</option>
+                      <option value="Cinturón Amarillo - Avanzado">Cinturón Amarillo- Avanzado</option>
+                      <option value="Cinturón Verde">Cinturón Verde</option>
+                      <option value="Cinturón Verde - Avanzado">Cinturón Verde- Avanzado</option>
+                      <option value="Cinturón Azul">Cinturón Azul</option>
+                      <option value="Cinturón Azul - Avanzado">Cinturón Azul- Avanzado</option>
+                      <option value="Cinturón Rojo">Cinturón Rojo</option>
+                      <option value="Cinturón Rojo - Avanzado">Cinturón Rojo- Avanzado</option>
+                      <option value="Cinturón Negro">Cinturón Negro</option>
+                    </select>
+                    {errors.cinta && <p>{errors.cinta.message}</p>}
                   </div>
                 </td>
               </tr> 
               <tr>
                 <td>
                   <div className='formularios-escuela'>
-                    <input {...register('anioNacimiento', { required: true })} placeholder='¿En que año nacio?'/>
-                    {errors.escuela && <p>{errors.escuela.message}</p>}
+                    <select {...register('sexo')}>
+                      <option value="">¿Cuál es su sexo?</option>
+                      <option value="Femenil">Mujer</option>
+                      <option value="Varonil">Hombre</option>
+                    </select>
+                    {errors.sexo && <p>{errors.sexo.message}</p>}
                   </div>
                 </td>
               </tr> 
               <tr>
                 <td>
                   <div className='formularios-escuela'>
-                    <input {...register('modalidad', { required: true })} placeholder='¿En que participará?'/>
-                    {errors.escuela && <p>{errors.escuela.message}</p>}
+                    <input {...register('anioNacimiento')} placeholder='¿En qué año nació?'/>
+                    {errors.anioNacimiento && <p>{errors.anioNacimiento.message}</p>}
                   </div>
                 </td>
               </tr> 
               <tr>
                 <td>
                   <div className='formularios-escuela'>
-                    <input {...register('peso', { required: true })} placeholder='¿Cuanto pesa?'/>
-                    {errors.escuela && <p>{errors.escuela.message}</p>}
+                    <input {...register('modalidad')} placeholder='¿En qué participará?'/>
+                    {errors.modalidad && <p>{errors.modalidad.message}</p>}
                   </div>
                 </td>
               </tr> 
-
-
-            </table>
-            <div className='enviar'>
-              <button type="submit" >siguiente</button>
-            </div>
+              <tr>
+                <td>
+                  <div className='formularios-escuela'>
+                    <input {...register('peso')} placeholder='¿Cuánto pesa? (kg)'/>
+                    {errors.peso && <p>{errors.peso.message}</p>}
+                  </div>
+                </td>
+              </tr> 
+              <tr>
+                <td>
+                  <div className='formularios-escuela'>
+                    <input {...register('estatura')} placeholder='¿Cuánto mide? (cm)'/>
+                    {errors.estatura && <p>{errors.estatura.message}</p>}
+                  </div>
+                </td>
+              </tr> 
+            </tbody>
+          </table>
+          <div className='enviar'>
+            <button type="submit">Siguiente</button>
+          </div>
         </div>
-          </form>
-      </div>
+      </form>
+    </div>
   );
-}
+};
 
-
+export default Competidor;
