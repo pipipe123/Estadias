@@ -27,7 +27,7 @@ const Comencemos = () => {
     const renderComponent = () => {
         switch (selectedComponent) {
             case 'Competidor':
-                return <Competidor gimnasio={gimnasio} escuela={escuelau}/>;
+                return <Competidor gimnasio={gimnasio} escuela={escuela}/>;
             case 'Escuela':
                 return <Escuela usuario={usuario} onEscuelaSubmit={handleEscuelaSubmit} />;
             case 'Gimnasio':

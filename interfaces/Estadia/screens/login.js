@@ -20,7 +20,6 @@ export default function Login() {
       const response = await login(data);
 
       if (response.status === 200) {
-        // Suponiendo que el backend envía un mensaje "Inicio de sesión exitoso" al iniciar sesión correctamente
         Swal.fire({
           title: 'Inicio de sesión exitoso',
           text: 'Ahora puedes acceder al sistema.',
@@ -28,11 +27,10 @@ export default function Login() {
           confirmButtonText: 'Ir al inicio'
         }).then((result) => {
           if (result.isConfirmed) {
-            navigate('/home', { state: { usuario: data.usuario } }); // Redirige al home
+            navigate('/home', { state: { usuario: data.usuario } });
           }
         });
       } else {
-        // Manejar errores específicos según el backend
         Swal.fire({
           title: 'Error',
           text: response.data,

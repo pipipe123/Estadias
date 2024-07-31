@@ -1,32 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { FaBars, FaArrowLeft } from 'react-icons/fa'; // Importa los íconos de React Icons
-import HeaderHome from '../components/header-home'; // Asegúrate de importar el componente correctamente
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import { getEscuela } from '../services/AuthService';
-import '../css/menuprincipal.css'; // Importa el CSS del menú principal
-import '../css/general.css'; // Importa el CSS general
+import { FaBars, FaArrowLeft } from 'react-icons/fa';
+import HeaderHome from '../components/header-home';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { getEscuela } from '../services/AuthService.js';
+import '../css/menuprincipal.css';
+import '../css/general.css';
+import { useManejoSesion } from '../services/sesion.js';
+import { getGimnasiosCount, getCompetidoresCount, getCinturonesNegrosCount } from '../services/compServices.js';
 
 export default function MenuPrincipal() {
   const [escuela, setEscuela] = useState('');
+  const [gimnasiosCount, setGimnasiosCount] = useState(0);
+  const [competidoresCount, setCompetidoresCount] = useState(0);
+  const [cinturonesNegrosCount, setCinturonesNegrosCount] = useState(0);
+  const [usuario, setUsuario] = useState('');
   const location = useLocation();
-  const { usuario } = location.state || { usuario: '' };
   const navigate = useNavigate();
 
   useEffect(() => {
-    const recuperarUsuario = async (usuario) => {
-      console.log(usuario)
+    // Asegúrate de que `usuario` se inicializa correctamente
+    const user = location.state?.usuario || null;
+    setUsuario(user);
+     // Verifica el valor aquí
+    useManejoSesion(user,navigate);
+  }, [location.state]);
+
+  // Usa el hook para manejar la sesión
+
+  useEffect(() => {
+    // console.log('Usuario en MenuPrincipal:', usuario);
+    const recuperarDatos = async (usuario) => {
       try {
-        const result = await getEscuela(usuario);
-        console.log(result)
-        setEscuela(result);
+        const escuelaResult = await getEscuela(usuario);
+        setEscuela(escuelaResult);
+        const gimnasiosCountResult = await getGimnasiosCount(escuelaResult);
+        setGimnasiosCount(gimnasiosCountResult);
+        const competidoresCountResult = await getCompetidoresCount(escuelaResult);
+        setCompetidoresCount(competidoresCountResult);
+        const cinturonesNegrosCountResult = await getCinturonesNegrosCount(escuelaResult);
+        setCinturonesNegrosCount(cinturonesNegrosCountResult);
       } catch (error) {
-        console.error('Error al recuperar la escuela del usuario:', error);
+        console.error('Error al recuperar los datos:', error);
       }
     };
 
     if (usuario) {
-      recuperarUsuario(usuario);
+      recuperarDatos(usuario);
     }
   }, [usuario]);
 
@@ -35,19 +54,17 @@ export default function MenuPrincipal() {
   };
 
   const gyms = () => {
-    navigate('/Mis Gimnasios', { state: { escuela: escuela } });
+    navigate('/Mis_Gimnasios', { state: { escuela: escuela, usuario: usuario } });
   };
 
   return (
     <div className='container'>
       <HeaderHome />
       <div className='sidebar'>
-        {/* Aquí puedes añadir los elementos del menú lateral */}
         <ul>
           <li><button onClick={onBack}><FaArrowLeft /></button></li>
-          <li><FaBars className="menu-icon" /></li>
+          <li><button><FaBars className="menu-icon" /></button></li>
           <li><button onClick={gyms}><FaBars className="menu-icon" /></button></li>
-          {/* Añade más elementos del menú lateral aquí */}
         </ul>
       </div>
       <div className='content-menuprincipal'>
@@ -56,19 +73,18 @@ export default function MenuPrincipal() {
             <tr className='fila-1'>
               <td><div className='letrero'>
                 <h1>Competidores</h1>
-                <p>0</p>
+                <p>{competidoresCount}</p>
               </div></td>
               <td><div className='letrero'>
                 <h1>Gimnasios</h1>
-                <p>0</p>
+                <p>{gimnasiosCount}</p>
               </div></td>
               <td><div className='letrero'>
                 <h1>Cintas negras</h1>
-                <p>0</p>
+                <p>{cinturonesNegrosCount}</p>
               </div></td>
             </tr>
           </table>
-
           <table>
             <tr>
               <td className='fila-2'>

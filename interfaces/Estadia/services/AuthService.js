@@ -40,7 +40,6 @@ export const addEscuelaToUser = (data) => {
   export const getEscuela = async (usuario) => {
     try {
       const response = await axios.post(`${URL_API}/getEscuelaByUser`, { usuario });
-      console.log('pase por aqui tambien ')
       return response.data.escuela;
     } catch (error) {
       console.error('Error al obtener la escuela:', error);

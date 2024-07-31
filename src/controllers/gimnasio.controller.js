@@ -1,6 +1,16 @@
 import Gimnasio from "../models/gimnasio.model.js";
 import Escuela from "../models/escuela.model.js";
+export const getGimnasiosCountByEscuela = async (req, res) => {
+    const { escuela } = req.params;
 
+    try {
+        const count = await Gimnasio.countDocuments({ escuela });
+        res.status(200).json({ count });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al obtener la cantidad de gimnasios');
+    }
+};
 // Crear un nuevo gimnasio
 export const createGimnasio = async (req, res) => {
     const { nombre, escuela, entrenador } = req.body;

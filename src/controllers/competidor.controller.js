@@ -77,7 +77,9 @@ export const createCompetidor = async (req, res) => {
         }
 
         // Calcular el IMC
-        const imc = peso / (estatura * estatura);
+
+        const estaturaEnM= estatura /100
+        const imc = peso / (estaturaEnM * estaturaEnM);
 
         const newCompetidor = new Competidor({
             nombre,
@@ -105,7 +107,17 @@ export const createCompetidor = async (req, res) => {
         res.status(500).send('Error al crear el competidor');
     }
 };
+export const getCompetidoresCountByEscuela = async (req, res) => {
+    const { escuela } = req.params;
 
+    try {
+        const count = await Competidor.countDocuments({ escuela });
+        res.status(200).json({ count });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al obtener la cantidad de competidores');
+    }
+};
 // Leer todos los competidores
 export const readCompetidor = async (req, res) => {
     try {
@@ -190,5 +202,42 @@ export const readCompetidoresByGimnasio = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send('Error al buscar competidores por gimnasio');
+    }
+};
+
+
+export const getCinturonesNegrosCountByEscuela = async (req, res) => {
+    const { escuela } = req.params;
+
+    try {
+        const count = await Competidor.countDocuments({ escuela, grado: 0 });
+        res.status(200).json({ count });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al obtener la cantidad de cinturones negros');
+    }
+};
+
+// Actualizar el torneo de un competidor
+export const updateCompetidorTorneo = async (req, res) => {
+    const { nombre, torneo } = req.body; // Obtener nombre y torneo del cuerpo de la solicitud
+
+    try {
+        // Encontrar y actualizar el competidor por nombre
+        const updatedCompetidor = await Competidor.findOneAndUpdate(
+            { nombre: nombre }, // Buscar por nombre
+            { torneo: torneo }, // Actualizar el campo torneo
+            { new: true } // Devolver el documento actualizado
+        );
+        
+        if (!updatedCompetidor) {
+            return res.status(404).send('Competidor no encontrado');
+        }
+
+        // Devolver solo el competidor modificado
+        res.status(200).json(updatedCompetidor);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al actualizar el torneo del competidor');
     }
 };

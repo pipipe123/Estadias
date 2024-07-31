@@ -1,5 +1,5 @@
 import axios from 'axios';
-import escuela from '../components/escuela';
+// import escuela from '../components/escuela';
 
 const URL_API = "http://localhost:3000/api";
 
@@ -85,46 +85,7 @@ export function deleteGimnasio(data) {
         });
 }
 
-// Entrenador
-export function createEntrenador(data) {
-    return axios.post(`${URL_API}/Entrenador`, data)
-        .catch(error => {
-            console.error('Error al enviar la solicitud:', error);
-            throw error;
-        });
-}
 
-export function readEntrenador() {
-    return axios.get(`${URL_API}/Entrenador`)
-        .catch(error => {
-            console.error('Error al enviar la solicitud:', error);
-            throw error;
-        });
-}
-
-export function readEntrenadorxNombre(nombre) {
-    return axios.get(`${URL_API}/Entrenador/${nombre}`)
-        .catch(error => {
-            console.error('Error al enviar la solicitud:', error);
-            throw error;
-        });
-}
-
-export function updateEntrenador(data) {
-    return axios.put(`${URL_API}/Entrenador`, data)
-        .catch(error => {
-            console.error('Error al enviar la solicitud:', error);
-            throw error;
-        });
-}
-
-export function deleteEntrenador(data) {
-    return axios.delete(`${URL_API}/Entrenador`, { data })
-        .catch(error => {
-            console.error('Error al enviar la solicitud:', error);
-            throw error;
-        });
-}
 
 // Competidor
 export function createCompetidor(data) {
@@ -228,4 +189,31 @@ export function readCompetidoresByGimnasio(gimnasio) {
             throw error;
         });
 }
+export const getGimnasiosCount = async (escuela) => {
+    try {
+        const response = await axios.get(`${URL_API}/gimnasios/count/${escuela}`);
+        return response.data.count;
+    } catch (error) {
+        console.error('Error al obtener la cantidad de gimnasios:', error);
+        throw error;
+    }
+};
 
+export const getCompetidoresCount = async (escuela) => {
+    try {
+        const response = await axios.get(`${URL_API}/competidores/count/${escuela}`);
+        return response.data.count;
+    } catch (error) {
+        console.error('Error al obtener la cantidad de competidores:', error);
+        throw error;
+    }
+};
+export const getCinturonesNegrosCount = async (escuela) => {
+    try {
+        const response = await axios.get(`${URL_API}/competidores/cinturonesNegros/count/${escuela}`);
+        return response.data.count;
+    } catch (error) {
+        console.error('Error al obtener la cantidad de cinturones negros:', error);
+        throw error;
+    }
+};

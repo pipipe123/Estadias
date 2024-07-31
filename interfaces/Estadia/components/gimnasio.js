@@ -27,7 +27,7 @@ const Gimnasio = ({ escuela, onGimnasioSubmit }) => {
     const res = await createGimnasio(dataconescuela);
     console.log(res);
     // Puedes usar la escuela aquí si es necesario
-    onGimnasioSubmit(data.nombre, escuelau)
+    onGimnasioSubmit(data.nombre, escuela)
   };
 
   return (
@@ -48,7 +48,7 @@ const Gimnasio = ({ escuela, onGimnasioSubmit }) => {
             <tr>
               <td>
                 <div className='formularios-escuela'>
-                  <input {...register('entrenador', { required: true })} placeholder='¿Quién será tu entrenador?'/>
+                  <input {...register('entrenador', { required: true })} placeholder='¿Quién será su entrenador?'/>
                   {errors.entrenador && <p>{errors.entrenador.message}</p>}
                 </div>
               </td>

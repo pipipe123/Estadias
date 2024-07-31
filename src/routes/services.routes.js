@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { createEscuela, readEscuela, readEscuelaxNombre, updateEscuela, deleteEscuela } from "../controllers/escuela.controller.js";
-import { createGimnasio, readGimnasio, readGimnasioxNombre, updateGimnasio, deleteGimnasio, readGimnasioxEscuela} from "../controllers/gimnasio.controller.js";
-import { createCompetidor, readCompetidor, updateCompetidor, deleteCompetidor, readCompetidoresByGimnasio } from "../controllers/competidor.controller.js";
+import { createGimnasio, readGimnasio, readGimnasioxNombre, updateGimnasio, deleteGimnasio, readGimnasioxEscuela, getGimnasiosCountByEscuela} from "../controllers/gimnasio.controller.js";
+import { updateCompetidorTorneo,createCompetidor, readCompetidor, updateCompetidor, deleteCompetidor, readCompetidoresByGimnasio, getCompetidoresCountByEscuela, getCinturonesNegrosCountByEscuela} from "../controllers/competidor.controller.js";
 
 import { createEvento, readEvento, updateEvento, deleteEvento, ReadEventoxCodigo } from "../controllers/evento.controller.js";
 import { readCompetidoresPorTorneo } from "../controllers/grafica.controller.js";
@@ -36,5 +36,13 @@ router.delete('/Evento',deleteEvento);
 
 router.get('/Grafica/:codigoTorneo', readCompetidoresPorTorneo);
 router.get('/Emparejar/:codigoTorneo', EmparejarCompetidores);
+
+
+
+router.get('/competidores/count/:escuela', getCompetidoresCountByEscuela);
+router.get('/gimnasios/count/:escuela', getGimnasiosCountByEscuela);
+router.get('/competidores/cinturonesNegros/count/:escuela', getCinturonesNegrosCountByEscuela);
+
+router.post('/addCompetidor',updateCompetidorTorneo)
 
 export default router

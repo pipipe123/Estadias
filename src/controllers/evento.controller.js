@@ -4,15 +4,14 @@ import generarCodigoAleatorio from "./operaciones.js";
 // Create Evento
 export const createEvento = async (req, res) => {
     const {
-        totalAreas,
-        cantidadCompetidores,
-        cantidadjueces
+
+        usuario,
+        nombre
     } = req.body;
     try {
         const newEvento = new Evento({
-            totalAreas,
-            cantidadCompetidores,
-            cantidadjueces,
+            nombre,
+            usuario,
             codigo: generarCodigoAleatorio()
         });
         const saveEvento = await newEvento.save();

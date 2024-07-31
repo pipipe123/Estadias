@@ -1,17 +1,20 @@
 import mongoose from "mongoose";
 
 const competidorSchema = new mongoose.Schema({
+    nombre:{
+        type: String
+    },
     totalAreas: {
         type: Number,
-        required: true
+        // required: true
     },
     cantidadCompetidores: {
         type: Number,
-        required: true
+        // required: true
     },
     cantidadJueces: {
         type: Number,
-        required: true
+        // required: true
     },
     codigo: {
         type: String,
@@ -19,11 +22,14 @@ const competidorSchema = new mongoose.Schema({
     },
     combate: {
         type: Object,
-        required: true
+        // required: true
     },
     formas: {
         type: Object,
-        required: true
+        // required: true
+    }, 
+    usuario:{
+        type: String
     }
 });
 
