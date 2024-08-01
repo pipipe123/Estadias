@@ -174,3 +174,15 @@ hr.divider-misgimnasios {
 .algomas-misgimnasios {
     height: 100%;
 }
+
+/* misgimnasios.css */
+.delete-icon {
+    color: red;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .delete-icon:hover {
+    color: darkred;
+  }
+  

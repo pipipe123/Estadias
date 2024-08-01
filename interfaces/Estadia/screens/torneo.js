@@ -72,9 +72,11 @@ const Torneos = () => {
   };
 
   const eliminarEvento = async (codigo) => {
+
     if (window.confirm('¿Estás seguro de que quieres eliminar este evento?')) {
       try {
-        await deleteEvento(codigo);
+        data = {codigo:codigo}
+        await deleteEvento(data);
         setTorneos(torneos.filter(torneo => torneo.codigo !== codigo));
         alert('El evento ha sido eliminado.');
       } catch (error) {
@@ -94,6 +96,7 @@ const Torneos = () => {
   const handleEventoSubmit = (nuevoEvento) => {
     setShowForm(false);
     setTorneos((prevTorneos) => [...prevTorneos, nuevoEvento]);
+    
   };
 
   return (

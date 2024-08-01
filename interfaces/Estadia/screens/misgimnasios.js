@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { readGimnasioxEscuela, createGimnasio } from '../services/compServices.js';
-import { FaBars, FaPlus } from 'react-icons/fa';
+import { readGimnasioxEscuela, deleteGimnasio } from '../services/compServices.js';
+import { FaBars, FaPlus, FaTrash } from 'react-icons/fa';
 import { IoMdHome } from "react-icons/io";
 import Gimnasio from '../components/gimnasio';
 import { useManejoSesion } from '../services/sesion.js';
@@ -53,29 +53,50 @@ const MisGimnasios = () => {
       });
   };
 
+  const handleDeleteGimnasio = (nombre) => {
+    if (window.confirm('¿Estás seguro de que deseas eliminar este gimnasio?')) {
+      data = {nombre:nombre}
+      console.log(data)
+      deleteGimnasio(data)
+        .then(() => {
+          // Actualiza la lista de gimnasios después de eliminar
+          readGimnasioxEscuela(escuela)
+            .then(response => {
+              setGimnasios(response.data);
+            })
+            .catch(error => {
+              setError(error.message);
+            });
+        })
+        .catch(error => {
+          console.error('Error al eliminar gimnasio:', error);
+          setError('Error al eliminar gimnasio.');
+        });
+    }
+  };
+
   const menu = () => {
     navigate('/home', { state: { usuario: usuario } });
   };
+
   const events = () => {
     navigate('/Torneos', { state: { escuela: escuela, usuario: usuario } });
   };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
     <div className='container-misgimnasios'>
-      <HeaderHome  usuario={usuario}  />
+      <HeaderHome usuario={usuario} />
       <div className='sidebar-misgimnasios'>
         <ul>
           <li><FaBars className="menu-icon-main" /></li>
           <li><button onClick={menu}><IoMdHome className="menu-icon"/><p>Menu</p></button></li>
           <li><button onClick={events}><MdEmojiEvents className="menu-icon"/><p>Eventos</p></button></li>
-
           <li></li>
-         
           <li><button onClick={handleAddGimnasioClick}><FaPlus className="add-icon-misgimnasios" /><p>añadir gimnasio</p></button></li>
-
         </ul>
       </div>
       <div className='content-misgimnasios'>
@@ -90,6 +111,13 @@ const MisGimnasios = () => {
                   <h3>{gimnasio.nombre}</h3>
                   <p>Escuela: {gimnasio.escuela}</p>
                   <p>Entrenador: {gimnasio.entrenador}</p>
+                  <FaTrash
+                    className='delete-icon'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteGimnasio(gimnasio.nombre);
+                    }}
+                  />
                 </li>
               ))}
             </ul>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { readCompetidoresByGimnasio, addCompetidor } from '../services/compServices'; // Asegúrate de importar la función adecuada
-import { FaPlus } from 'react-icons/fa';
+import { readCompetidoresByGimnasio, addCompetidor, deleteCompetidor } from '../services/compServices'; // Asegúrate de importar la función adecuada
+import { FaPlus, FaTrash } from 'react-icons/fa';
 import '../css/miscompetidores.css'; // Actualiza el import del CSS
 import HeaderHome from '../components/header-home';
 import Competidor from '../components/competidor';
@@ -10,6 +10,7 @@ import { useManejoSesion } from '../services/sesion.js';
 import { CgGym } from "react-icons/cg";
 import { IoMdHome } from "react-icons/io";
 import { MdEmojiEvents } from "react-icons/md";
+import Swal from 'sweetalert2';
 
 const MisCompetidores = () => {
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ const MisCompetidores = () => {
   const [selectedCompetidor, setSelectedCompetidor] = useState(null);
   const [torneoCodigo, setTorneoCodigo] = useState('');
 
-
   useEffect(() => {
     const user = location.state?.usuario || null;
     setUsuario(user);
@@ -39,10 +39,8 @@ const MisCompetidores = () => {
         })
         .catch(error => {
           console.error(error.message);
-          // setCompetidores([]);
-          // console.log('c:')
+          setError('Error al cargar competidores');
         });
-        console.log(escuela)
     }
   }, [gimnasio]);
 
@@ -58,11 +56,6 @@ const MisCompetidores = () => {
     navigate('/Torneos', { state: { escuela: escuela, usuario: usuario } });
   };
 
-  // const toggleAddCompetidorForm = () => {
-  //   setShowAddCompetidorForm(!showAddCompetidorForm);
-  //   setShowAddToTorneoForm(false); // Ocultar formulario de agregar a torneo
-  // };
-
   const handleAgregarCompetidor = (competidor) => {
     setSelectedCompetidor(competidor);
     setShowAddToTorneoForm(true);
@@ -76,25 +69,22 @@ const MisCompetidores = () => {
   const handleCompetidorSubmit = () => {
     setShowAddCompetidorForm(false);
     readCompetidoresByGimnasio(gimnasio)
-    .then(response => {
-      setCompetidores(response.data);
-    })
-    .catch(error => {
-      console.error(error.message);
-      // setCompetidores([]);
-      // console.log('c:')
-    });
+      .then(response => {
+        setCompetidores(response.data);
+      })
+      .catch(error => {
+        console.error(error.message);
+        setError('Error al cargar competidores');
+      });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedCompetidor && torneoCodigo) {
       try {
-        console.log(selectedCompetidor.nombre, torneoCodigo)
-        let data = {nombre:selectedCompetidor.nombre, torneo:torneoCodigo}
-        const res =await addCompetidor(data);
-        console.log(res)
-        // alert('Competidor agregado al torneo exitosamente.');
+        let data = { nombre: selectedCompetidor.nombre, torneo: torneoCodigo };
+        const res = await addCompetidor(data);
+        console.log(res);
         setShowAddToTorneoForm(false);
         setTorneoCodigo('');
         setSelectedCompetidor(null);
@@ -108,6 +98,40 @@ const MisCompetidores = () => {
     }
   };
 
+  const handleDeleteCompetidor = async (nombre) => {
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Esta acción eliminará al competidor.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        data = {nombre:nombre}
+        await deleteCompetidor(data);
+        // Refresh competidores list after deletion
+        readCompetidoresByGimnasio(gimnasio)
+          .then(response => {
+            setCompetidores(response.data);
+        window.location.reload();
+
+          })
+          .catch(error => {
+            console.error(error.message);
+            setError('Error al cargar competidores');
+          });
+      } catch (error) {
+        console.error('Error al eliminar competidor:', error);
+        Swal.fire('Error', 'Hubo un error al eliminar el competidor.', 'error');
+      }
+    }
+  };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -118,9 +142,9 @@ const MisCompetidores = () => {
       <div className='sidebar-miscompetidores'>
         <ul>
           <li><FaBars className="menu-icon-mainmiscompetidores" /></li>
-          <li><button onClick={menu}><IoMdHome className="menu-icon"/><p>Menu</p></button></li>
-          <li><button onClick={gyms}><CgGym className="menu-icon"/><p>Gimnasios</p></button></li>
-          <li><button onClick={events}><MdEmojiEvents className="menu-icon"/><p>Eventos</p></button></li>
+          <li><button onClick={menu}><IoMdHome className="menu-icon" /><p>Menu</p></button></li>
+          <li><button onClick={gyms}><CgGym className="menu-icon" /><p>Gimnasios</p></button></li>
+          <li><button onClick={events}><MdEmojiEvents className="menu-icon" /><p>Eventos</p></button></li>
           <li></li>
           <li><button onClick={handleAddCompetidorClick}><FaPlus /><p>Añadir Competidor</p></button></li>
         </ul>
@@ -141,19 +165,25 @@ const MisCompetidores = () => {
                   <p>Categoria: {competidor.categoria}</p>
                   <p>Estatura: {competidor.estatura}</p>
                   <p>IMC: {competidor.imc}</p>
-                  <p>Torneo: {competidor.torneo }</p>
+                  <p>Torneo: {competidor.torneo}</p>
                   <button 
                     className='btn-agregar-torneo' 
                     onClick={() => handleAgregarCompetidor(competidor)}
                   >
                     <FaPlus />
                   </button>
+                  <button 
+                    className='btn-delete-competidor' 
+                    onClick={() => handleDeleteCompetidor(competidor.nombre)}
+                  >
+                    <FaTrash />
+                  </button>
                 </li>
               ))}
             </ul>
           )}
         </div>
-        {showAddCompetidorForm && <Competidor gimnasio={gimnasio} escuela={escuela} outoflogin={true} onCompetidorSubmit={handleCompetidorSubmit}/>}
+        {showAddCompetidorForm && <Competidor gimnasio={gimnasio} escuela={escuela} outoflogin={true} onCompetidorSubmit={handleCompetidorSubmit} />}
         {showAddToTorneoForm && (
           <div className='form-agregar-torneo'>
             <h3>Agregar Competidor a un Torneo</h3>

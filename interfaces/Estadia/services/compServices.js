@@ -78,6 +78,8 @@ export function updateGimnasio(data) {
 }
 
 export function deleteGimnasio(data) {
+    console.log(data)
+
     return axios.delete(`${URL_API}/Gimnasio`, { data })
         .catch(error => {
             console.error('Error al enviar la solicitud:', error);
@@ -154,6 +156,7 @@ export function updateEvento(data) {
 }
 
 export function deleteEvento(data) {
+
     return axios.delete(`${URL_API}/Evento`, { data })
         .catch(error => {
             console.error('Error al enviar la solicitud:', error);

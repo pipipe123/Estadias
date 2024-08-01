@@ -76,6 +76,7 @@ export const updateEvento = async (req, res) => {
 // Delete Evento
 export const deleteEvento = async (req, res) => {
     const { codigo } = req.body;
+    console.log(codigo)
     try {
         const deletedEvento = await Evento.findOneAndDelete({ codigo: codigo });
         if (!deletedEvento) {

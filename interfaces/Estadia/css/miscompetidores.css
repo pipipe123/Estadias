@@ -203,3 +203,10 @@ hr.divider-miscompetidores {
 .algomas-miscompetidores {
     height: 100%;
 }
+.btn-delete-competidor {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+  }
+  

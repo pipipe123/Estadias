@@ -104,7 +104,7 @@ export const updateGimnasio = async (req, res) => {
 
 // Eliminar un gimnasio por nombre
 export const deleteGimnasio = async (req, res) => {
-    const { nombre } = req.params;
+    const { nombre } = req.body;
 
     try {
         const deletedGimnasio = await Gimnasio.findOneAndDelete({ nombre });
