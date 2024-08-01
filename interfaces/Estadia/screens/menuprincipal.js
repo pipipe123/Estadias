@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FaBars, FaArrowLeft } from 'react-icons/fa';
+import { FaBars, FaArrowLeft,} from 'react-icons/fa';
+import { CgGym } from "react-icons/cg";
 import HeaderHome from '../components/header-home';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getEscuela } from '../services/AuthService.js';
@@ -7,7 +8,7 @@ import '../css/menuprincipal.css';
 import '../css/general.css';
 import { useManejoSesion } from '../services/sesion.js';
 import { getGimnasiosCount, getCompetidoresCount, getCinturonesNegrosCount } from '../services/compServices.js';
-
+import { MdEmojiEvents } from "react-icons/md";
 export default function MenuPrincipal() {
   const [escuela, setEscuela] = useState('');
   const [gimnasiosCount, setGimnasiosCount] = useState(0);
@@ -56,15 +57,18 @@ export default function MenuPrincipal() {
   const gyms = () => {
     navigate('/Mis_Gimnasios', { state: { escuela: escuela, usuario: usuario } });
   };
-
+  const events = () => {
+    navigate('/Torneos', { state: { escuela: escuela, usuario: usuario } });
+  };
   return (
     <div className='container'>
-      <HeaderHome />
+      <HeaderHome  usuario={usuario} />
       <div className='sidebar'>
         <ul>
-          <li><button onClick={onBack}><FaArrowLeft /></button></li>
-          <li><button><FaBars className="menu-icon" /></button></li>
-          <li><button onClick={gyms}><FaBars className="menu-icon" /></button></li>
+          <li><FaBars className="menu-icon-main" /></li>
+
+          <li><button onClick={gyms}><CgGym className="menu-icon"/><p>Gimnasios</p></button></li>
+          <li><button onClick={events}><MdEmojiEvents className="menu-icon"/><p>Eventos</p></button></li>
         </ul>
       </div>
       <div className='content-menuprincipal'>

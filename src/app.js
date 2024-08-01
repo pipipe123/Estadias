@@ -3,11 +3,10 @@ import morgan from 'morgan'
 import authRoutes from './routes/auth.routes.js'
 import session from 'express-session';
 import services from './routes/services.routes.js'
-
-
+import bodyParser from 'body-parser'
 import cors from 'cors'
 const app = express()
-
+app.use(bodyParser.json());
 app.use(cors({origin:"http://localhost:8081",
 credentials: true // Habilitar el envío de credenciales
 }))

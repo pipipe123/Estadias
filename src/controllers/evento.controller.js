@@ -89,3 +89,17 @@ export const deleteEvento = async (req, res) => {
     }
 };
 
+
+export const readEventosByUsuario = async (req, res) => {
+    const { usuario } = req.params;
+    try {
+        const eventos = await Evento.find({ usuario: usuario });
+        if (!eventos || eventos.length === 0) {
+            return res.status(404).send('No se encontraron eventos para este usuario');
+        }
+        res.status(200).send(eventos);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al buscar los eventos del usuario');
+    }
+};

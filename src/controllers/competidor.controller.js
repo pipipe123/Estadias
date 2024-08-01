@@ -95,7 +95,7 @@ export const createCompetidor = async (req, res) => {
             gimnasio,
             escuela,
             categoria,
-            torneo,
+            torneo:"N/A",
             imc // Añadimos el IMC al modelo
         });
 
@@ -223,21 +223,43 @@ export const updateCompetidorTorneo = async (req, res) => {
     const { nombre, torneo } = req.body; // Obtener nombre y torneo del cuerpo de la solicitud
 
     try {
+        console.log('Actualizando competidor con nombre:', nombre); // Log para verificar el nombre
+        console.log('Nuevo torneo:', torneo); // Log para verificar el torneo
+
         // Encontrar y actualizar el competidor por nombre
         const updatedCompetidor = await Competidor.findOneAndUpdate(
             { nombre: nombre }, // Buscar por nombre
             { torneo: torneo }, // Actualizar el campo torneo
             { new: true } // Devolver el documento actualizado
         );
-        
+
         if (!updatedCompetidor) {
+            console.log('Competidor no encontrado');
             return res.status(404).send('Competidor no encontrado');
         }
 
+        console.log('Competidor actualizado:', updatedCompetidor); // Log para verificar el documento actualizado
         // Devolver solo el competidor modificado
         res.status(200).json(updatedCompetidor);
     } catch (error) {
-        console.log(error);
+        console.log('Error al actualizar el torneo del competidor:', error); // Log para errores
         res.status(500).send('Error al actualizar el torneo del competidor');
+    }
+};
+
+
+// Obtener nombres de competidores por torneo
+export const readCompetidoresByTorneo = async (req, res) => {
+    const { torneo } = req.params; // Obtener el torneo desde los parámetros de la URL
+
+    try {
+        const competidores = await Competidor.find({ torneo }, 'nombre'); // Solo seleccionar el campo "nombre"
+        if (!competidores.length) {
+            return res.status(404).send([]);
+        }
+        res.status(200).send(competidores);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al buscar competidores por torneo');
     }
 };

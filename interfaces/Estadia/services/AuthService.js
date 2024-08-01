@@ -46,3 +46,5 @@ export const addEscuelaToUser = (data) => {
       throw error;
     }
   };
+
+

@@ -160,20 +160,6 @@ export function deleteEvento(data) {
             throw error;
         });
 }
-export function readCompetidoresPorTorneo(codigoTorneo) {
-    return axios.get(`${URL_API}/Grafica/${codigoTorneo}`)
-        .catch(error => {
-            console.error('Error al enviar la solicitud:', error);
-            throw error;
-        });
-}
-export function emparejarCompetidores(codigoTorneo) {
-    return axios.get(`${URL_API}/Emparejar/${codigoTorneo}`)
-        .catch(error => {
-            console.error('Error al enviar la solicitud:', error);
-            throw error;
-        });
-}
 
 export function readGimnasioxEscuela(escuela) {
     return axios.get(`${URL_API}/Gimnasio/Escuela/${escuela}`)
@@ -214,6 +200,73 @@ export const getCinturonesNegrosCount = async (escuela) => {
         return response.data.count;
     } catch (error) {
         console.error('Error al obtener la cantidad de cinturones negros:', error);
+        throw error;
+    }
+};
+
+export const addCompetidor = async (competidorData) => {
+    try {
+const response = await axios.put(`${URL_API}/addCompetidor`, competidorData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+export function graficar(codigoTorneo) {
+    return axios.get(`${URL_API}/Grafica/${codigoTorneo}`)
+        .catch(error => {
+            console.error('Error al enviar la solicitud:', error);
+            throw error;
+        });
+}
+export function emparejar(codigoTorneo) {
+    return axios.get(`${URL_API}/Emparejar/${codigoTorneo}`)
+        .catch(error => {
+            console.error('Error al enviar la solicitud:', error);
+            throw error;
+        });
+}
+
+
+
+export const generarPDF = async (codigoTorneo) => {
+    try {
+        // Realiza la solicitud GET para generar el PDF
+        const response = await axios.get(`${URL_API}/generarPDF/${codigoTorneo}`, {
+            responseType: 'blob', // Importante para manejar el archivo PDF
+        });
+
+        // Crea un enlace temporal para descargar el archivo
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${codigoTorneo}_registro.pdf`); // Nombre del archivo para la descarga
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error('Error al generar o descargar el PDF:', error);
+    }
+};
+
+export const obtenerEventosPorUsuario = async (usuario) => {
+    try {
+        const response = await axios.get(`${URL_API}/eventos/usuario/${usuario}`);
+        console.log(response.data)
+        return response;
+    } catch (error) {
+        console.error('Error al obtener los eventos del usuario', error);
+        throw error;
+    }
+};
+
+export const obtenerNombresCompetidoresPorTorneo = async (torneo) => {
+    try {
+        const response = await axios.get(`${URL_API}/competidores/torneo/${torneo}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener los nombres de competidores por torneo', error);
         throw error;
     }
 };

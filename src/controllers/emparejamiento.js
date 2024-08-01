@@ -4,7 +4,8 @@ export const EmparejarCompetidores = async (req, res) => {
     const { codigoTorneo } = req.params;
     try {
         const Torneo = await Evento.findOne({ codigo: codigoTorneo });
-        let ngrafica=1
+        let ngrafica = 1;
+
         // Crear una estructura inicial para modalidades
         const categoriasOrdenadas = [
             [ // formas
@@ -60,77 +61,76 @@ export const EmparejarCompetidores = async (req, res) => {
                 ]
             ]
         ];
-        //guia:               n1 n2 n3 n4
-        // categoriasOrdenadas[0][0][0][1][0]
-        // 0 formas 1 combate  |  |  |  |  | 2-
-        // --------------------   |  |  |  |
-        // 0 todas las cintas     |  |  |  |
-        // 1 cintas negras        |  |  |  |2
-        //-------------------------  |  |  |
-        // 0 femenil                 |  |  |
-        // 1 varonil                 |  |  |
-        // ---------------------------  |  |
-        // 0 infantil                   |  |3
-        // 1 juvenil                    |  |
-        // 2 adultos                    |  |
-        // ------------------------------  |
-        // # de competidor                \|
-        // ---------------------------------
-        // return res.status(200).send(categoriasOrdenadas[0][0][0][0]);
-        // let prueba1=categoriasOrdenadas[0][0][0][0]u
+
         class Grafica {
-            constructor(comp1,comp2,comp3,comp4, Ngrafica) {
-                // this.comp1 = comp1
-                // this.comp2 = comp2
-                // this.comp3 = comp3
-                // this.comp4 = comp4
-                this.competidores = [comp1, comp2, comp3,comp4];
-                this.Ngrafica= Ngrafica
+            constructor(comp1, comp2, comp3, comp4, Ngrafica, tipo, categoria) {
+                this.competidores = [comp1, comp2, comp3, comp4];
+                this.Ngrafica = Ngrafica;
+                this.tipo = tipo;
+                this.categoria = categoria;
             }
-            comparar(){
-                for (let i = 0; i < 3; i++) {
-                    let a = this.compArray[i]
-                    let b =this.compArray[i+1]
-                    if (Math.abs(a.peso - b.peso)>4 ){
-                        console.log(`Diferencia muy grande de peso entre comp${i + 1} (${a.peso}) y comp${i + 2} (${b.peso})`);
+
+            comparar() {
+                for (let i = 0; i < this.competidores.length - 1; i++) {
+                    let a = this.competidores[i];
+                    let b = this.competidores[i + 1];
+                    if (Math.abs(a.peso - b.peso) > 4) {
+                        console.log(`Diferencia muy grande de peso entre competidor ${i + 1} (${a.peso}) y competidor ${i + 2} (${b.peso})`);
                     }
-                    
                 }
             }
         }
-        let vaciadorDearray = (fuente,final) =>{
-            for (let i = 0; i < fuente.length; i+=4) {
-                const grafica= new Grafica(
-                        fuente[i+1],
-                        fuente[i+2],
-                        fuente[i+3],
-                        fuente[i+4],
-                        ngrafica
-                    )       
-                    ngrafica+=1
-                    final.push(grafica)
-                }
-                return final
+
+        let vaciadorDearray = (fuente, final, tipo, categoria) => {
+            for (let i = 0; i < fuente.length; i += 4) {
+                const grafica = new Grafica(
+                    fuente[i],
+                    fuente[i + 1],
+                    fuente[i + 2],
+                    fuente[i + 3],
+                    ngrafica,
+                    tipo,
+                    categoria
+                );
+                ngrafica += 1;
+                final.push(grafica);
             }
+            return final;
+        };
 
-
-            let verificarniveles = (arr, final2) => {
-                arr.forEach((nivel1, n1) => {
-                    nivel1.forEach((nivel2, n2) => {
-                        nivel2.forEach((nivel3, n3) => {
-                            nivel3.forEach((nivel4, n4) => {
-                                if (nivel4 && Array.isArray(nivel4)) {
-                                    vaciadorDearray(nivel4, final2);
-                                }
-                            });
+        let verificarniveles = (arr, final2) => {
+            arr.forEach((nivel1, n1) => {
+                nivel1.forEach((nivel2, n2) => {
+                    nivel2.forEach((nivel3, n3) => {
+                        nivel3.forEach((nivel4, n4) => {
+                            if (nivel4 && Array.isArray(nivel4)) {
+                                // Determina el tipo y la categoría en función del nivel
+                                let tipo = n1 === 0 ? 'formas' : 'combates';
+                                let categoria = '';
+                                
+                                if (n2 === 0) categoria = 'todas las cintas';
+                                else categoria = 'cintas negras';
+                                
+                                if (n3 === 0) categoria += ', femenil';
+                                else categoria += ', varonil';
+                                
+                                if (n4 === 0) categoria += ', infantil';
+                                else if (n4 === 1) categoria += ', juvenil';
+                                else categoria += ', adultos';
+                                
+                                vaciadorDearray(nivel4, final2, tipo, categoria);
+                            }
                         });
                     });
                 });
-                return final2;
-            };
-           let graficados = []
-           verificarniveles(categoriasOrdenadas,graficados)
-        // console.log(graficados)
+            });
+            return final2;
+        };
+
+        let graficados = [];
+        verificarniveles(categoriasOrdenadas, graficados);
+        Torneo.graficados = graficados;
+        await Torneo.save();
         return res.status(200).send(graficados);
     } catch (error) {
         console.log(error);

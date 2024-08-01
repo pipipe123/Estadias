@@ -15,12 +15,13 @@ import MisGimnasios from './screens/misgimnasios.js';
 import MisCompetidores from './screens/miscompetidores.js'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import Evento from './components/evento.js';
-
+import Torneos from './screens/torneo.js';
 export default function App() {
   return (
     <Router>
         <Routes>
           <Route path="/" element={<MainApp />} />
+          <Route path="/Torneos" element={<Torneos />} />
           <Route path="/Evento" element={<Evento />} />
           <Route path="/Login" element={<Login />} /> {/* Corrección aquí */}
           <Route path="/Registro" element={<Signup />} />

@@ -57,7 +57,8 @@ const competidorSchema = new moongose.Schema({
     },
     torneo:{
         type: String
-    }
+    },
+    
     
     
 })

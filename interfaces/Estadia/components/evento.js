@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -13,10 +12,6 @@ const schema = yup.object().shape({
 });
 
 const Evento = ({ usuario, onEventoSubmit }) => {
-    
-    // const [usuario, setUsuario] = useState('');
-    // const user = location.state?.usuario || null;
-    // setUsuario(user);
   const {
     register,
     handleSubmit,
@@ -28,13 +23,12 @@ const Evento = ({ usuario, onEventoSubmit }) => {
   const onSubmit = async (data) => {
     try {
       // Crear el evento
-   
-      
-      // Preparar los datos para la función onEventoSubmit
-      let data2 = { ...data,usuario };
-      console.log(data2)
+      let data2 = { ...data, usuario };
       const res = await createEvento(data2);
-        console.log(res)
+      console.log(res);
+      if (onEventoSubmit) {
+        onEventoSubmit(res.data);
+      }
     } catch (error) {
       console.error('Error al crear el evento', error);
     }
@@ -42,7 +36,6 @@ const Evento = ({ usuario, onEventoSubmit }) => {
 
   return (
     <div className='forms-evento'>
-      <div className='mensaje'><h1>Primer paso</h1></div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='forms-content-evento'>
           <h1>Registra tu evento</h1>
@@ -50,11 +43,11 @@ const Evento = ({ usuario, onEventoSubmit }) => {
             <tr>
               <td>
                 <div className='formularios-evento'>
-                  <input {...register('nombre', { required: true })} placeholder='Nombre del evento'/>
+                  <input {...register('nombre', { required: true })} placeholder='Nombre del evento' />
                   {errors.nombre && <p>{errors.nombre.message}</p>}
                 </div>
               </td>
-            </tr> 
+            </tr>
           </table>
           <div className='enviar'>
             <button type="submit">Siguiente</button>

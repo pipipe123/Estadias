@@ -23,13 +23,17 @@
     justify-content: center;
     width: 100%;
     list-style: none;
-    margin: 10px;
+    margin: 20px;
     padding: 0;
   }
   
   .container {
     display: flex;
     width: 100%;
+  }
+  .menu-icon-main {
+    margin-top: 10px;
+    font-size: 60px;
   }
   
   .menu-icon {

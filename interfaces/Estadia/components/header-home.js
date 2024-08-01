@@ -1,15 +1,37 @@
-import React from 'react';
-import { FaBars, FaUserCircle } from 'react-icons/fa'; // Importa los íconos de React Icons
-import '../css/header-home.css'; // Importa el CSS del header
+import React, { useState } from 'react';
+import { FaBars, FaUserCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../services/AuthService';
+import '../css/header-home.css';
 
-const HeaderHome = () => {
+const HeaderHome = ({ usuario }) => {
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const navigate = useNavigate();
+
+  const toggleUserMenu = () => {
+    setShowUserMenu(!showUserMenu);
+  };
+
+  const handleLogout = () => {
+    if (window.confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+      logout();
+      navigate('/login');
+    }
+  };
+
   return (
     <header className="header">
       <div className="header-left">
         <div className="logo">Tu Logo</div>
       </div>
       <div className="header-right">
-        <FaUserCircle className="profile-icon" />
+        <FaUserCircle className="profile-icon" onClick={toggleUserMenu} />
+        {showUserMenu && (
+          <div className="user-menu">
+            <p>{usuario}</p>
+            <button onClick={handleLogout}>Cerrar Sesión</button>
+          </div>
+        )}
       </div>
     </header>
   );

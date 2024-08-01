@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { readGimnasioxEscuela, createGimnasio } from '../services/compServices.js';
 import { FaBars, FaPlus } from 'react-icons/fa';
+import { IoMdHome } from "react-icons/io";
 import Gimnasio from '../components/gimnasio';
 import { useManejoSesion } from '../services/sesion.js';
-import '../css/menuprincipal.css';
+import '../css/misgimnasios.css'; // Cambié el nombre del archivo CSS para que coincida con el nuevo nombre de clase
 import HeaderHome from '../components/header-home';
+import { MdEmojiEvents } from "react-icons/md";
 
 const MisGimnasios = () => {
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const MisGimnasios = () => {
   }, [escuela]);
 
   const handleGymClick = (gimnasio) => {
-    navigate('/Mis_Competidores', { state: { gimnasio: gimnasio.nombre, escuela:escuela, usuario: usuario } });
+    navigate('/Mis_Competidores', { state: { gimnasio: gimnasio.nombre, escuela: escuela, usuario: usuario } });
   };
 
   const handleAddGimnasioClick = () => {
@@ -54,24 +56,31 @@ const MisGimnasios = () => {
   const menu = () => {
     navigate('/home', { state: { usuario: usuario } });
   };
-
+  const events = () => {
+    navigate('/Torneos', { state: { escuela: escuela, usuario: usuario } });
+  };
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
-    <div className='container'>
-      <HeaderHome />
-      <div className='sidebar'>
+    <div className='container-misgimnasios'>
+      <HeaderHome  usuario={usuario}  />
+      <div className='sidebar-misgimnasios'>
         <ul>
-          <li><FaBars className="menu-icon" /></li>
-          <li><button onClick={menu}><FaBars className="menu-icon" /></button></li> 
-          <li><button onClick={handleAddGimnasioClick}><FaPlus className="add-icon" /></button></li>
+          <li><FaBars className="menu-icon-main" /></li>
+          <li><button onClick={menu}><IoMdHome className="menu-icon"/><p>Menu</p></button></li>
+          <li><button onClick={events}><MdEmojiEvents className="menu-icon"/><p>Eventos</p></button></li>
+
+          <li></li>
+         
+          <li><button onClick={handleAddGimnasioClick}><FaPlus className="add-icon-misgimnasios" /><p>añadir gimnasio</p></button></li>
+
         </ul>
       </div>
-      <div className='content-menuprincipal'>
+      <div className='content-misgimnasios'>
         <h2>Gimnasios de la escuela {escuela}</h2>
-        <div className='scrollable-content'>
+        <div className='scrollable-content-misgimnasios'>
           {gimnasios.length === 0 ? (
             <p>No se encontraron gimnasios para esta escuela.</p>
           ) : (
@@ -87,7 +96,7 @@ const MisGimnasios = () => {
           )}
         </div>
         {showForm && <Gimnasio escuela={escuela} onGimnasioSubmit={handleGimnasioSubmit} />}
-        <div className='fondo-principal'>
+        <div className='fondo-principal-misgimnasios'>
           <img src="../assets/fondo-principal.jpg" alt="Fondo Principal" />
         </div>
       </div>

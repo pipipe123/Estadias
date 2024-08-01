@@ -4,6 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { createCompetidor } from '../services/compServices';
 import Swal from 'sweetalert2';
+import '../css/escuela.css' //hay que corregir esto 
+import '../css/general.css'
 
 // Esquema de validación de yup
 const schema = yup.object().shape({
@@ -28,7 +30,8 @@ const schema = yup.object().shape({
     .positive('Debe ser un número positivo'),
 });
 
-const Competidor = ({ gimnasio, escuela }) => {
+const Competidor = ({ gimnasio, escuela, outoflogin, onCompetidorSubmit }) => {
+  console.log(outoflogin)
   const {
     register,
     handleSubmit,
@@ -47,18 +50,20 @@ const Competidor = ({ gimnasio, escuela }) => {
       const res = await createCompetidor(datacongimnasio);
       console.log("Respuesta del servidor:", res);
 
-      // Muestra un mensaje de éxito y redirige al login
-      Swal.fire({
-        title: '¡Éxito!',
-        text: 'Los datos se han enviado correctamente. Ahora puedes iniciar sesión.',
-        icon: 'success',
-        confirmButtonText: 'Ir al Login'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Redirige al login, reemplaza '/login' con la ruta de tu login
-          window.location.href = '/login';
-        }
-      });
+      if(!outoflogin)  {
+
+        Swal.fire({
+          title: '¡Éxito!',
+          text: 'Los datos se han enviado correctamente. Ahora puedes iniciar sesión.',
+          icon: 'success',
+          confirmButtonText: 'Ir al Login'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Redirige al login, reemplaza '/login' con la ruta de tu login
+            window.location.href = '/login';
+          }
+        });
+      } 
     } catch (error) {
       console.error("Error al enviar datos:", error);
       Swal.fire({
@@ -68,6 +73,7 @@ const Competidor = ({ gimnasio, escuela }) => {
         confirmButtonText: 'Revisar'
       });
     }
+    onCompetidorSubmit(gimnasio)
   };
 
   return (

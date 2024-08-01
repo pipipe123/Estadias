@@ -30,6 +30,9 @@ const competidorSchema = new mongoose.Schema({
     }, 
     usuario:{
         type: String
+    },
+    graficados:{
+        type: Array
     }
 });
 
