@@ -33,8 +33,8 @@ export default function MainApp() {
               <table>
                 <tr>
                   <td className='presentacion'>
-                    <h2>Hola Mundo</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                    <h2>Bienvenido</h2>
+                    <p>¡Organiza y visualiza tus torneos de taekwondo con facilidad! Gestiona cada competencia de manera eficiente y precisa.</p>
                   </td>
                 </tr>
                 <tr>

@@ -14,7 +14,11 @@
     box-shadow: 0 4px 2px -2px gray; /* Sombra debajo del header */
     height: 8vh; /* El header ocupa el 8% de la altura del viewport */
 }
-
+.logoGfcarts {
+  width: 300px; /* Ajusta el tamaño de la imagen según sea necesario */
+  height: auto;
+  margin-left: 10px;
+}
 /* Contenedor central del header */
 .header-left,
 .header-right {

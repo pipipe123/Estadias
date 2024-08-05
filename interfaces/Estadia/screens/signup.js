@@ -33,15 +33,15 @@ export default function Signup() {
   return (
     <div className='contenedor'>
       <div className='side'>
-        <FaArrowLeft onClick={goToHome}/>
+        {/* <FaArrowLeft onClick={goToHome}/> */}
         <div className='side-content'>
           <table>
             <tr><td><h1>Bienvenido de vuelta</h1></td></tr>
             <tr><td><h3>¿Ya tienes una cuenta?</h3></td></tr>
             <tr><td><div className='separador'></div></td></tr>
             <tr><td><button className='RegistroSlide' onClick={goToLogin}>Inicia Sesion</button></td></tr>
-            <tr><td>
-          </td></tr>
+            <tr><td><br/></td></tr>
+            <tr><td> <button onClick={goToHome}><FaArrowLeft  /></button></td></tr>
           </table>
         </div>
       </div>

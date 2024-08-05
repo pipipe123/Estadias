@@ -22,7 +22,7 @@ const HeaderHome = ({ usuario }) => {
   return (
     <header className="header">
       <div className="header-left">
-        <div className="logo">Tu Logo</div>
+        <div className="logo"><img className='logoGfcarts' src="../assets/gfcarts.jpg"></img></div>
       </div>
       <div className="header-right">
         <FaUserCircle className="profile-icon" onClick={toggleUserMenu} />

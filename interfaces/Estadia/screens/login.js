@@ -56,7 +56,6 @@ export default function Login() {
   return (
     <div className='contenedor-1'>
       <div className='side-1'>
-        <FaArrowLeft onClick={goToHome} />
         <div className='side-content-1'>
           <table>
             <tbody>
@@ -64,6 +63,9 @@ export default function Login() {
               <tr><td><h3>¿Aún no tienes una cuenta?</h3></td></tr>
               <tr><td><div className='separador'></div></td></tr>
               <tr><td><button onClick={goToSignup}>Registrarse</button></td></tr>
+              <tr><td><br/></td></tr>
+              <tr><td> <button onClick={goToHome}><FaArrowLeft  /></button></td></tr>
+
             </tbody>
           </table>
         </div>

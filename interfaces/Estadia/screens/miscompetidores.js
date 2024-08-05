@@ -123,7 +123,8 @@ const MisCompetidores = () => {
           })
           .catch(error => {
             console.error(error.message);
-            setError('Error al cargar competidores');
+            setCompetidores([])
+            // setError('Error al cargar competidores');
           });
       } catch (error) {
         console.error('Error al eliminar competidor:', error);
@@ -132,9 +133,7 @@ const MisCompetidores = () => {
     }
   };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+ 
 
   return (
     <div className='container-miscompetidores'>

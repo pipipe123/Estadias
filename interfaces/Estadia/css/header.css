@@ -8,6 +8,11 @@
       opacity: 1;
   }
 }
+.logoGfcarts {
+  width: 300px; /* Ajusta el tamaño de la imagen según sea necesario */
+  height: auto;
+  margin-left: 10px;
+}
 .sticky-header {
   opacity: 0;
     animation: slide-in2 1s ease-out forwards;
