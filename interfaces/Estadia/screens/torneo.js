@@ -64,7 +64,7 @@ const Torneos = () => {
         await graficar(codigo);
         await emparejar(codigo);
         await generarPDF(codigo);
-        alert('El torneo ha sido graficado exitosamente.');
+        alert('El torneo ha sido graficado exitosamente, ahora puede encontar el arhcivo en su carpeta de descargas');
       } catch (error) {
         console.error('Error al graficar el torneo:', error);
       }

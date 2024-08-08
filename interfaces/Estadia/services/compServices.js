@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import escuela from '../components/escuela';
 
-const URL_API = "http://localhost:3000/api";
+const URL_API = "http://api-integradora.engranedigital.com/api";
 
 // Escuela
 export function createEscuela(data) {
@@ -241,13 +241,13 @@ export const generarPDF = async (codigoTorneo) => {
         });
 
         // Crea un enlace temporal para descargar el archivo
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${codigoTorneo}_registro.pdf`); // Nombre del archivo para la descarga
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // const url = window.URL.createObjectURL(new Blob([response.data]));
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.setAttribute('download', `${codigoTorneo}_registro.pdf`); // Nombre del archivo para la descarga
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link);
     } catch (error) {
         console.error('Error al generar o descargar el PDF:', error);
     }
