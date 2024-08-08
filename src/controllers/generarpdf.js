@@ -1,14 +1,5 @@
 import PDFDocument from 'pdfkit';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import path from 'path';
 import Evento from '../models/evento.model.js';
-import os from 'os';
-
-// Obtén el directorio actual
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 export const generarPDF = async (req, res) => {
     const { codigoTorneo } = req.params;
@@ -25,24 +16,13 @@ export const generarPDF = async (req, res) => {
         console.log('Torneo encontrado:', torneo);
 
         const doc = new PDFDocument({ size: 'A4', layout: 'landscape' }); // Orientación horizontal
-
-        // Determina la ruta de la carpeta de descargas del usuario
-        const userDownloadsPath = path.join(os.homedir(), 'Downloads');
-        const filePath = path.join(userDownloadsPath, `${codigoTorneo}_registro.pdf`); // Ruta del archivo en la carpeta de descargas
         
-        console.log('Ruta del archivo PDF:', filePath);
-
-  
-        if (!fs.existsSync(userDownloadsPath)) {
-            console.log('Carpeta de descargas no encontrada. Creando carpeta...');
-            fs.mkdirSync(userDownloadsPath, { recursive: true });
-        }
-
-        doc.pipe(fs.createWriteStream(filePath))
-           .on('error', (err) => {
-               console.error('Error al escribir el archivo PDF:', err);
-               res.status(500).send('Error al escribir el archivo PDF');
-           });
+        // Establecer los encabezados de la respuesta para que el navegador sepa que es un archivo PDF
+        res.setHeader('Content-Disposition', `attachment; filename="${codigoTorneo}_registro.pdf"`);
+        res.setHeader('Content-Type', 'application/pdf');
+        
+        // Transmitir el contenido del PDF al navegador
+        doc.pipe(res);
 
         const graficas = torneo.graficados;
 
@@ -138,20 +118,8 @@ export const generarPDF = async (req, res) => {
             doc.moveDown(2);
         });
 
-        // Esperar a que el documento PDF esté completamente escrito
+        // Finaliza la escritura del documento y lo envía al navegador
         doc.end();
-        doc.on('finish', () => {
-            console.log('PDF generado correctamente:', filePath);
-            res.download(filePath, (err) => {
-                if (err) {
-                    console.error('Error al enviar el PDF:', err);
-                    res.status(500).send('Error al enviar el PDF');
-                } else {
-                    console.log('PDF enviado exitosamente');
-                }
-            });
-        });
-        res.status(200).send('PDF generado');
 
     } catch (error) {
         console.error('Error al generar el PDF:', error.message);
