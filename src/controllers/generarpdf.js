@@ -32,7 +32,7 @@ export const generarPDF = async (req, res) => {
         
         console.log('Ruta del archivo PDF:', filePath);
 
-        // Asegúrate de que la carpeta de descargas existe (esto debería existir por defecto)
+  
         if (!fs.existsSync(userDownloadsPath)) {
             console.log('Carpeta de descargas no encontrada. Creando carpeta...');
             fs.mkdirSync(userDownloadsPath, { recursive: true });

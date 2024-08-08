@@ -23,7 +23,7 @@ export default function App() {
           <Route path="/" element={<MainApp />} />
           <Route path="/Torneos" element={<Torneos />} />
           <Route path="/Evento" element={<Evento />} />
-          <Route path="/Login" element={<Login />} /> {/* Corrección aquí */}
+          <Route path="/Login" element={<Login />} />
           <Route path="/Registro" element={<Signup />} />
           <Route path="/Competidor" element={<Competidor />} />
           <Route path="/Escuela" element={<Escuela />} />
