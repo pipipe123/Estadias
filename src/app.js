@@ -7,9 +7,9 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 const app = express()
 app.use(bodyParser.json());
-app.use(cors({origin:"http://localhost:8081",
-credentials: true // Habilitar el envío de credenciales
-}))
+// app.use(cors({origin:"http://localhost:8081",
+// credentials: true // Habilitar el envío de credenciales
+// }))
 
 app.use(morgan('dev'))
 app.use(express.json())

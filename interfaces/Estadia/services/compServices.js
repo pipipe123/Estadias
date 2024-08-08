@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import escuela from '../components/escuela';
 
-const URL_API = "http://api-integradora.engranedigital.com/api";
+const URL_API = "https://api-integradora.engranedigital.com/api";
 // const URL_API = "http://localhost:3000/api";
 
 

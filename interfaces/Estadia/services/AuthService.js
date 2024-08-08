@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL_API = 'http://api-integradora.engranedigital.com/auth'; // Cambia esto por la URL real de tu API
+const URL_API = 'https://api-integradora.engranedigital.com/auth'; // Cambia esto por la URL real de tu API
 // const URL_API = 'http://localhost:3000/auth'; // Cambia esto por la URL real de tu API
 
 // Función para añadir un usuario
