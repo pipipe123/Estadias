@@ -96,6 +96,7 @@ const Torneos = () => {
   const handleEventoSubmit = (nuevoEvento) => {
     setShowForm(false);
     setTorneos((prevTorneos) => [...prevTorneos, nuevoEvento]);
+    window.location.reload();
     
   };
 

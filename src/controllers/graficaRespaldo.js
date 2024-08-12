@@ -14,14 +14,7 @@ class CompetidorSimplificado {
         this.modalidad = modalidad;
     }
 }
-const ordenarCinturonesNegros = (arr) => {
-    return arr.slice().sort((a, b) => {
-        if (a.peso !== b.peso) {
-            return b.peso - a.peso;
-        }
-        return a.anioNacimiento - b.anioNacimiento;
-    });
-};
+
 const ordenarPorCintaEdadImc = (arr) => {
     return arr.slice().sort((a, b) => {
         if (a.grado !== b.grado) {
@@ -33,38 +26,33 @@ const ordenarPorCintaEdadImc = (arr) => {
         return a.imc - b.imc;
     });
 };
-// Función para intercalar competidores de diferentes gimnasios
-const intercalarCompetidores = (competidoresPorGimnasio) => {
-    const result = [];
-    let index = 0;
-    let totalCompetidores = competidoresPorGimnasio.reduce((acc, gimnasio) => acc + gimnasio.length, 0);
 
-    while (totalCompetidores > 0) {
-        for (let i = 0; i < competidoresPorGimnasio.length; i++) {
-            if (competidoresPorGimnasio[i][index]) {
-                result.push(competidoresPorGimnasio[i][index]);
-                totalCompetidores--;
-            }
+// Esta función ordenará los cinturones negros por peso, y luego por edad
+const ordenarCinturonesNegros = (arr) => {
+    return arr.slice().sort((a, b) => {
+        if (a.peso !== b.peso) {
+            return b.peso - a.peso;
         }
-        index++;
-    }
-
-    return result;
+        return a.anioNacimiento - b.anioNacimiento;
+    });
 };
 
-// Función que ordena y agrupa competidores por gimnasio
-const agruparCompetidoresPorGimnasio = (competidores) => {
-    const competidoresPorGimnasio = {};
-
-    competidores.forEach(competidor => {
-        const { gimnasio } = competidor;
-        if (!competidoresPorGimnasio[gimnasio]) {
-            competidoresPorGimnasio[gimnasio] = [];
+// Esta función ordenará todas las cintas considerando el grado y una diferencia de peso mayor a 4kg
+const ordenarTodasLasCintas = (arr) => {
+    return arr.slice().sort((a, b) => {
+        if (a.grado !== b.grado) {
+            return a.grado - b.grado;
         }
-        competidoresPorGimnasio[gimnasio].push(competidor);
+        if (Math.abs(a.peso - b.peso) > 4) {
+            return b.peso - a.peso;
+        }
+        return b.peso - a.peso;
     });
+};
 
-    return Object.values(competidoresPorGimnasio);
+// Esta función ordenará por edad
+const ordenarPorEdad = (arr) => {
+    return arr.slice().sort((a, b) => a.anioNacimiento - b.anioNacimiento);
 };
 
 export const readCompetidoresPorTorneo = async (req, res) => {
@@ -76,9 +64,6 @@ export const readCompetidoresPorTorneo = async (req, res) => {
         if (competidores.length === 0) {
             return res.status(404).send('No se encontraron competidores para este torneo');
         }
-
-        const competidoresPorGimnasio = agruparCompetidoresPorGimnasio(competidores);
-        const competidoresIntercalados = intercalarCompetidores(competidoresPorGimnasio);
 
         // Crear estructuras iniciales para "Formas" y "Combate" organizadas por cintas y cinturones negros
         const estructuraInicial = {
@@ -139,8 +124,8 @@ export const readCompetidoresPorTorneo = async (req, res) => {
         const formas = JSON.parse(JSON.stringify(estructuraInicial.formas));
         const combate = JSON.parse(JSON.stringify(estructuraInicial.combate));
 
-        // Añadir competidores intercalados a "Formas" y "Combate" según sexo y modalidad
-        competidoresIntercalados.forEach(c => {
+        // Añadir competidores a "Formas" y "Combate" según sexo y modalidad
+        competidores.forEach(c => {
             const esCintaNegra = c.grado === "0";
             const esFemenil = c.sexo === 'Femenil';
             const modalidad = c.modalidad;

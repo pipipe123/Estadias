@@ -5,7 +5,7 @@ export const generarPDF = async (req, res) => {
     const { codigoTorneo } = req.params;
 
     try {
-        console.log('Buscando torneo con código:', codigoTorneo);
+        // console.log('Buscando torneo con código:', codigoTorneo);
         const torneo = await Evento.findOne({ codigo: codigoTorneo });
 
         if (!torneo) {

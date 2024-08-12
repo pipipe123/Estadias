@@ -96,37 +96,54 @@
 
 .scrollable-content-miscompetidores {
     display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-y: auto;
     width: 100%;
+    max-height: calc(100vh - 150px); /* Adjust the height dynamically */
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .scrollable-content-miscompetidores ul {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     list-style: none;
     padding: 0;
     margin: 0;
+    width: 100%;
+    justify-content: center;
 }
 
 .scrollable-content-miscompetidores li {
-    flex: 0 0 auto;
-    width: 250px;
+    flex: 1 0 250px; /* Flex-grow, flex-shrink, and base width */
+    max-width: 250px; /* Set a max-width for each competitor card */
     margin: 10px;
     background: #f9f9f9;
     border: 1px solid #ddd;
     padding: 10px;
     box-sizing: border-box;
+    text-align: center; /* Center the content within the card */
+}
+
+.competidor-item h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.competidor-item p {
+    margin: 5px 0;
+    font-size: 14px;
 }
 
 .fondo-principal-miscompetidores {
-    margin-top: 10vh;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
     z-index: -1;
+    overflow: hidden; /* Ensure the background does not scroll */
 }
 
 .fondo-principal-miscompetidores img {
